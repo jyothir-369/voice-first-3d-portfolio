@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aarav Sharma – Talk to my work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{--bg:#09090a;--ink:#f4f3ef;--mute:#8d8c88;--red:#ff3b1f;--line:rgba(244,243,239,.22);color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#ecebe6;--ink:#0b0b0c;--mute:#6d6c68;--line:rgba(11,11,12,.25);color-scheme:light}}
+:root[data-theme="light"]{--bg:#ecebe6;--ink:#0b0b0c;--mute:#6d6c68;--line:rgba(11,11,12,.25);color-scheme:light}
+html,body{height:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Mono",ui-monospace,Menlo,Consolas,monospace;font-size:15px;line-height:1.6;overflow:hidden}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+.dot{font-family:Doto,"DM Mono",monospace;font-weight:900;letter-spacing:.02em}
+.top{position:fixed;z-index:3;left:clamp(14px,3vw,34px);right:clamp(14px,3vw,34px);top:calc(14px + env(safe-area-inset-top,0px));display:flex;justify-content:space-between;align-items:center}
+.top b{font-size:26px;line-height:1}
+.top b span{font-size:20px;margin-left:8px;color:var(--mute)}
+.status{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:99px;padding:6px 16px;font-size:20px;line-height:1}
+.status i{width:10px;height:10px;border-radius:50%;background:var(--mute)}
+body[data-s="listening"] .status i{background:var(--red);animation:pl 1s infinite}
+body[data-s="speaking"] .status i{background:var(--ink);animation:pl .5s infinite}
+body[data-s="thinking"] .status i{background:var(--mute);animation:pl .3s infinite}
+@keyframes pl{50%{opacity:.25}}
+.cap{position:fixed;z-index:3;left:50%;transform:translateX(-50%);top:calc(86px + env(safe-area-inset-top,0px));width:min(900px,calc(100% - 32px));text-align:center;pointer-events:none}
+.cap .you{color:var(--mute);min-height:1.6em;font-size:15px}
+.cap .ai{font-family:Doto,"DM Mono",monospace;font-weight:700;font-size:clamp(24px,4.2vw,46px);line-height:1.12;margin-top:8px;min-height:2.4em}
+.cap.off .ai{opacity:0}
+.deck{position:fixed;z-index:3;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:14px;padding:0 14px}
+.chips{display:flex;gap:8px;max-width:100%;overflow-x:auto;scrollbar-width:none;padding:2px}
+.chips button,.opts button{flex:none;font:inherit;font-size:14px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:99px;padding:6px 15px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s}
+.chips button:hover,.opts button:hover{background:var(--ink);color:var(--bg)}
+.mic{width:96px;height:96px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;display:grid;place-items:center;transition:transform .15s,background .2s,border-color .2s,color .2s;position:relative}
+.mic:hover{transform:scale(1.06)}
+.mic::after{content:"";position:absolute;inset:-10px;border-radius:50%;border:1px solid var(--line)}
+body[data-s="listening"] .mic{background:var(--red);border-color:var(--red);color:#fff;animation:ring 1.2s infinite}
+body[data-s="speaking"] .mic{background:var(--ink);color:var(--bg)}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,59,31,.55)}100%{box-shadow:0 0 0 26px rgba(255,59,31,0)}}
+.opts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.opts button{font-size:12.5px;padding:3px 12px;color:var(--mute)}
+.opts button[aria-pressed="true"]{color:var(--bg);background:var(--ink)}
+.intro{position:fixed;inset:0;z-index:10;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;transition:opacity .8s,visibility .8s}
+.intro.gone{opacity:0;visibility:hidden}
+.intro h1{font-size:clamp(54px,13vw,170px);line-height:.88;margin:0 0 22px}
+.intro h1 em{font-style:normal;color:var(--red)}
+.intro p{max-width:46ch;color:var(--mute);margin:0 0 30px}
+.begin{font:inherit;font-weight:500;font-size:18px;color:var(--bg);background:var(--ink);border:0;border-radius:99px;padding:16px 44px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:transform .15s,background .2s}
+.begin:hover{transform:scale(1.05);background:var(--red);color:#fff}
+.intro small{margin-top:20px;color:var(--mute);font-size:13px}
+.trend{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:0 0 26px}.trend span{border:1px solid var(--line);border-radius:99px;padding:4px 14px;font-size:13px;color:var(--mute)}.trend b{color:var(--red);font-weight:500}
+@media(max-width:780px){.cap{top:calc(78px + env(safe-area-inset-top,0px))}.mic{width:84px;height:84px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body data-s="idle">
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<div class="top"><b class="dot">AARAV SHARMA<span>♑︎</span></b><div class="status dot" aria-live="polite"><i></i><span id="stx">IDLE</span></div></div>
+
+<div class="cap" id="cap"><div class="you" id="you" aria-live="polite"></div><div class="ai" id="ai" aria-live="polite"></div></div>
+
+<div class="deck">
+<div class="chips" id="chips" role="group" aria-label="Questions you can tap instead of speaking"></div>
+<button class="mic" id="mic" type="button" aria-label="Tap and speak"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+<div class="opts" id="opts"><button type="button" id="oc" aria-pressed="true">Captions on</button><button type="button" id="ov">Voice</button><button type="button" id="os">Speed 1x</button><button type="button" id="oh" aria-pressed="false">Hands-free off</button></div>
+</div>
+
+<div class="intro" id="intro">
+<h1 class="dot">TALK TO<br>MY <em>WORK.</em></h1>
+<p>No menus. No scrolling. Ask me out loud about Aarav’s AI products, skills and results, and I’ll answer in my own voice.</p>
+<div class="trend" aria-label="Trending in AI right now"><span><b>Trending now</b></span><span>Agentic AI</span><span>MCP</span><span>Voice agents</span><span>On-device models</span><span>Evals</span></div>
+<button class="begin" id="begin" type="button">Tap to begin</button>
+<small>Best in Chrome or Edge, with sound on and the microphone allowed.</small>
+</div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var T=[
+{k:"build built agent agents products research automate workflow orbit autopilot ai bot chatbot shipped projects",s:"Aarav builds AI systems that do real work. Orbit is a team of agents that writes a cited research brief in two minutes. Autopilot gives small business owners about eight hours back every week.",next:1,q:"Want to hear about the apps he has launched?"},
+{k:"app apps users plantly khatakit notes dispatch launched consumer mobile",s:"He has shipped nine products. Plantly reached twelve thousand monthly users, KhataKit runs in eight hundred shops, and NotesNest finished third on Product Hunt.",next:3,q:"Want to hear about the results?"},
+{k:"technical code engineer stack python skills model train fine-tune cost rag retrieval evaluation test smart expert",s:"He fine-tunes small models that cut running costs by about sixty two percent, builds retrieval over private documents, and runs fourteen agents in production. Nothing ships without automated tests, and all three hundred twelve pass.",next:4,q:"Want to know why that beats an agency?"},
+{k:"results revenue money traction proof profit sales numbers uptime",s:"His companies earned eighteen lakh rupees in the first year, with ninety nine point nine percent uptime across systems.",next:5,q:"Want to hear about funding and the team?"},
+{k:"why agency different freelancer unique better compare ownership",s:"He owns the whole stack from data to deployment, ships in about nine days, and is paid for outcomes, not hours.",next:7,q:"Want to know how to hire him?"},
+{k:"funding investor raise capital preseed backed investment team",s:"He raised a pre-seed round at nineteen and now leads a team of six.",next:7,q:"Want to know how to hire him?"},
+{k:"who about aarav yourself story age background founder ludhiana started",s:"Aarav is twenty one, from Ludhiana. He started coding at fourteen, sold his first app at seventeen, and now builds AI systems for businesses.",next:0,q:"Want to hear what he builds?"},
+{k:"hire contact email reach talk together collaborate call book start project price work",s:"The fastest way is email. It’s hello at aarav dot dev. Tell him the problem in two lines and he replies within a day.",c:"Email hello@aarav.dev with the problem in two lines. He replies within a day.",next:null,q:""},
+{k:"trending trend trends latest future hot agentic mcp protocol voice device small models evals new today",s:"Right now the big shifts in AI are agentic systems that take action, open protocols like M C P that plug agents into tools, voice agents like this one, small models that run on the device, and serious testing before release. Aarav builds around all five.",c:"Right now the big shifts in AI are agentic systems that take action, open protocols like MCP that plug agents into tools, voice agents like this one, small models that run on the device, and serious testing before release. Aarav builds around all five.",next:0,q:"Want to hear what he builds?"}
+];
+var SYN={bot:"agent",built:"build",shipped:"build",money:"revenue",coder:"technical",code:"technical"};
+function score(q){var w=(q.toLowerCase().match(/[a-z0-9]+/g)||[]),ex=[];w.forEach(function(x){ex.push(x);if(SYN[x])ex.push(SYN[x])});var best=-1,bs=0;T.forEach(function(o,i){var tk=o.k.split(' '),s=0;ex.forEach(function(x){if(x.length<3)return;tk.forEach(function(t){if(t===x||(x.length>3&&t.indexOf(x)===0)||(t.length>3&&x.indexOf(t)===0))s++})});if(s>bs){bs=s;best=i}});return best}
+function topic(i){var o=T[i];pending=o.next;var f=o.q?' '+o.q:'';return{s:o.s+f,c:(o.c||o.s)+f}}
+var pending=null,last=null,state='intro',SR=window.SpeechRecognition||window.webkitSpeechRecognition,synth=window.speechSynthesis;
+var capOn=true,hands=false,rate=1,voices=[],vi=0,rec=null,lastErr='',typer=null;
+var you=$('you'),ai=$('ai');
+function setState(s){state=s;document.body.dataset.s=s;$('stx').textContent=s==='idle'?'TAP TO TALK':s.toUpperCase()}
+function say(msg){you.textContent=msg}
+/* voices */
+function loadVoices(){if(!synth)return;var all=synth.getVoices()||[];voices=all.filter(function(v){return /^en/i.test(v.lang)});voices.sort(function(a,b){var r=function(v){return /en[-_]IN/i.test(v.lang)?0:/en[-_]GB/i.test(v.lang)?1:2};return r(a)-r(b)});if(vi>=voices.length)vi=0;var v=voices[vi];$('ov').textContent=v?'Voice: '+v.name.replace(/Microsoft |Google /,'').split(' ')[0]:'Voice'}
+if(synth){loadVoices();synth.onvoiceschanged=loadVoices}else{$('ov').hidden=true;$('os').hidden=true}
+$('ov').onclick=function(){if(!voices.length)return;vi=(vi+1)%voices.length;loadVoices();speakText('Hi, this is my new voice.',false)};
+$('os').onclick=function(){rate=rate===1?1.15:rate===1.15?.9:1;$('os').textContent='Speed '+rate+'x'};
+$('oc').onclick=function(){capOn=!capOn;$('cap').classList.toggle('off',!capOn);$('oc').setAttribute('aria-pressed',capOn);$('oc').textContent=capOn?'Captions on':'Captions off'};
+$('oh').onclick=function(){hands=!hands;$('oh').setAttribute('aria-pressed',hands);$('oh').textContent=hands?'Hands-free on':'Hands-free off'};
+/* speaking */
+var bump=0;
+var CUES=[[/^orbit$/,'agents','ORBIT'],[/^(agents?|agentic)$/,'agents','AGENTS'],[/^(autopilot|hours)$/,'clock','AUTOPILOT'],[/^plantly$/,'plant','PLANTLY'],[/^(khatakit|ledgers?)$/,'ledger','KHATAKIT'],[/^(notesnest|notes)$/,'notes','NOTESNEST'],[/^(fine-tunes|models?|retrieval)$/,'model','SMALL MODELS'],[/^(tests?|testing|automated)$/,'tests','312 TESTS'],[/^(lakh|revenue|earned|uptime)$/,'bars','RESULTS'],[/^(stack|deployment)$/,'tower','FULL STACK'],[/^pre-seed$/,'rocket','PRE-SEED'],[/^six$/,'team','TEAM OF SIX'],[/^(email|hello@aarav\.dev)$/,'mail','HELLO@AARAV.DEV'],[/^(ludhiana|coding)$/,'person','AARAV'],[/^voice$/,'voice','VOICE AGENTS'],[/^(mcp|protocols?)$/,'hub','MCP'],[/^(device|on-device)$/,'phone','ON-DEVICE']];
+var onCue=function(){},onClear=function(){};
+function reveal(text,ms){clearInterval(typer);var w=text.split(' '),i=0,step=Math.max(60,ms/w.length),seen={},n=0;ai.textContent='';onClear();
+typer=setInterval(function(){var word=w[i];ai.textContent+=(i?' ':'')+word;var k=word.toLowerCase().replace(/[^a-z0-9@.\-]/g,'').replace(/\.$/,'');i++;
+for(var c=0;c<CUES.length;c++)if(CUES[c][0].test(k)&&!seen[CUES[c][1]]&&n<4){seen[CUES[c][1]]=1;n++;onCue(CUES[c][1],CUES[c][2]);break}
+if(i>=w.length)clearInterval(typer)},step)}
+function speakText(text,cap,done){if(!synth){if(done)done();return}synth.cancel();var u=new SpeechSynthesisUtterance(text);if(voices[vi])u.voice=voices[vi];u.rate=rate;u.pitch=1;
+u.onstart=function(){setState('speaking')};u.onboundary=function(){bump=1};u.onend=u.onerror=function(){if(state==='speaking')setState('idle');if(done)done()};synth.speak(u)}
+function reply(r){last=r;setState('thinking');var dur=r.s.length/(14*rate)*1000;
+setTimeout(function(){reveal(r.c,dur);if(synth){speakText(r.s,true,function(){ai.textContent=r.c;if(hands&&state==='idle')listen()})}else{setState('idle')}},450)}
+function respond(text){text=text.trim();if(!text)return;say('You: “'+text+'”');var s=text.toLowerCase().trim(),r;
+if(/^(yes|yeah|yep|yup|sure|okay|ok|please|go ahead|tell me|why not)\b/.test(s)&&pending!=null){var k=pending;r=topic(k)}
+else if(/\b(stop|quiet|enough|cancel)\b/.test(s)){stopSpeak();pending=null;setState('idle');ai.textContent='Okay, stopping.';return}
+else if(/\b(repeat|again|say that)\b/.test(s)&&last){r=last}
+else if(/^(hi|hello|hey|namaste)\b/.test(s)){pending=0;r={s:'Hello! Ask me about his AI products, his skills, his results, or how to hire him.',c:'Hello! Ask me about his AI products, his skills, his results, or how to hire him.'}}
+else{var i=score(text);if(i<0){pending=0;r={s:'I’m not sure about that one. You could ask about his AI products, his skills, his results, or how to hire him.',c:'I’m not sure about that one. Ask about his AI products, skills, results, or how to hire him.'}}else r=topic(i)}
+reply(r)}
+function stopSpeak(){clearInterval(typer);onClear();if(synth)synth.cancel();if(state==='speaking')setState('idle')}
+/* meter */
+var ac=null,an=null,stream=null,buf=null,chrome=/Chrome|Chromium|Edg/.test(navigator.userAgent);
+function startMeter(){if(!chrome||ac||!navigator.mediaDevices)return;navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){if(state!=='listening'){s.getTracks().forEach(function(t){t.stop()});return}stream=s;ac=new(window.AudioContext||window.webkitAudioContext)();var src=ac.createMediaStreamSource(s);an=ac.createAnalyser();an.fftSize=512;src.connect(an);buf=new Float32Array(an.fftSize)}).catch(function(){})}
+function stopMeter(){if(stream)stream.getTracks().forEach(function(t){t.stop()});stream=null;if(ac){try{ac.close()}catch(e){}ac=null}an=null}
+/* listening */
+function listen(){if(!SR){say('This browser can’t hear me.');ai.textContent='Tap one of the questions below instead. I’ll still answer out loud.';return}
+stopSpeak();if(rec){try{rec.abort()}catch(e){}}lastErr='';rec=new SR();rec.lang=navigator.language||'en-IN';rec.interimResults=true;rec.maxAlternatives=1;var heard='';
+rec.onstart=function(){setState('listening');say('Listening…');startMeter()};
+rec.onresult=function(e){var t='';for(var i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;heard=t;say('You: “'+t+'”');bump=1};
+rec.onerror=function(e){lastErr=e.error};
+rec.onend=function(){stopMeter();if(heard.trim()){respond(heard)}else{setState('idle');if(lastErr==='not-allowed'||lastErr==='service-not-allowed'){say('Microphone blocked.');ai.textContent='Allow the mic in your browser, or open this page in its own tab. You can also tap a question below.'}else if(lastErr==='network'){say('No connection to the speech service.');ai.textContent='Tap a question below instead.'}else{say('I didn’t catch that.');ai.textContent='Tap the mic and try again.'}}};
+try{rec.start()}catch(e){say('I couldn’t start the microphone.')}}
+$('mic').onclick=function(){if(state==='listening'){try{rec.stop()}catch(e){}return}listen()};
+['What has he built?','Is he technical?','What are his results?','Why not an agency?','How do I hire him?','Tell me about Aarav','What’s trending in AI?'].forEach(function(s){var b=document.createElement('button');b.type='button';b.textContent=s;b.onclick=function(){stopSpeak();respond(s)};$('chips').appendChild(b)});
+$('begin').onclick=function(){$('intro').classList.add('gone');if(synth)loadVoices();setState('idle');pending=0;var g='Hi, I’m the voice of Aarav’s portfolio. Ask me anything out loud, or tap a question. What would you like to know?';ai.textContent='';reply({s:g,c:g})};
+addEventListener('pagehide',function(){stopSpeak();stopMeter()});
+/* 3D dot terrain */
+var cv=$('gl');
+try{
+var dark=!matchMedia('(prefers-color-scheme: light)').matches||document.documentElement.dataset.theme==='dark';
+var R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});R.setPixelRatio(Math.min(devicePixelRatio,2));
+var S=new THREE.Scene(),C=new THREE.PerspectiveCamera(48,1,.1,100);
+var COLS=130,ROWS=72,DX=.2,DZ=.22,HL=ROWS*3+4,hist=[];for(var h=0;h<HL;h++)hist.push(0);
+var pos=new Float32Array(COLS*ROWS*3),col=new Float32Array(COLS*ROWS*3);
+for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++){var i=r*COLS+c;pos[i*3]=(c-COLS/2)*DX;pos[i*3+1]=0;pos[i*3+2]=2-r*DZ}
+var g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('color',new THREE.BufferAttribute(col,3));
+var k=document.createElement('canvas');k.width=k.height=32;var x=k.getContext('2d');x.fillStyle='#fff';x.beginPath();x.arc(16,16,14,0,6.283);x.fill();
+var pts=new THREE.Points(g,new THREE.PointsMaterial({size:.085,map:new THREE.CanvasTexture(k),vertexColors:true,transparent:true,alphaTest:.2,depthWrite:false}));S.add(pts);
+var BG=dark?.04:.93,BASE=dark?.34:.7,AC={idle:dark?[.9,.9,.9]:[.05,.05,.05],listening:[1,.23,.12],speaking:dark?[1,1,1]:[.05,.05,.05],thinking:dark?[.7,.7,.74]:[.3,.3,.32],intro:[.9,.9,.9]},cur=[.9,.9,.9],env=0,mx=0,my=0;
+addEventListener('pointermove',function(e){mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+function size(){R.setSize(innerWidth,innerHeight,false);C.aspect=innerWidth/innerHeight;C.updateProjectionMatrix()}addEventListener('resize',size);size();
+function amp(T){bump*=.93;var a;
+if(state==='listening'){if(an){an.getFloatTimeDomainData(buf);var s=0;for(var i=0;i<buf.length;i++)s+=buf[i]*buf[i];a=Math.min(1,Math.sqrt(s/buf.length)*8)}else a=.12+.1*Math.abs(Math.sin(T*3));a=Math.max(a,bump*.75)}
+else if(state==='speaking')a=.22+.24*Math.abs(Math.sin(T*7.3))*Math.abs(Math.sin(T*2.1+1))+bump*.5;
+else if(state==='thinking')a=.12+.07*Math.sin(T*9);
+else a=.05+.03*Math.sin(T*1.2);
+env+=(a-env)*.35;return Math.min(1,env)}
+
+var INK=dark?0xf4f3ef:0x0b0b0c,ACC=0xff3b1f,stage=new THREE.Group();stage.position.set(0,2.05,-3.2);S.add(stage);
+var dotTex=pts.material.map,MM={};
+function lm(c){return MM['l'+c]||(MM['l'+c]=new THREE.LineBasicMaterial({color:c}))}
+function pmt(c){return MM['p'+c]||(MM['p'+c]=new THREE.PointsMaterial({color:c,size:.07,map:dotTex,transparent:true,alphaTest:.2,depthWrite:false}))}
+function holo(geo,c,wire){var g=new THREE.Group();g.add(new THREE.LineSegments(wire?new THREE.WireframeGeometry(geo):new THREE.EdgesGeometry(geo),lm(c)));g.add(new THREE.Points(geo,pmt(c)));return g}
+function add(p,g,x,y,z){g.position.set(x||0,y||0,z||0);p.add(g);return g}
+var Bx=function(w,h,d){return new THREE.BoxGeometry(w,h,d)},Ic=function(r,d){return new THREE.IcosahedronGeometry(r,d)},Tr=function(r,t,s){return new THREE.TorusGeometry(r,t,4,s)},Cy=function(a,b,h,s){return new THREE.CylinderGeometry(a,b,h,s)};
+var B={
+agents:function(){var g=new THREE.Group(),core=add(g,holo(Ic(.42,1),ACC,1)),sa=[];for(var i=0;i<6;i++)sa.push(add(g,holo(Bx(.2,.2,.2),INK)));var rg=add(g,holo(Tr(1.1,.004,64),INK,1));rg.rotation.x=Math.PI/2;return{g:g,u:function(t,a){core.rotation.y=t;sa.forEach(function(o,i){var an=t*(1+a*2)+i*1.047;o.position.set(Math.cos(an)*1.1,Math.sin(an*1.7)*.4,Math.sin(an)*1.1);o.rotation.x=t*2})}}},
+clock:function(){var g=new THREE.Group();add(g,holo(Tr(.9,.012,48),INK,1));var h1=new THREE.Group(),h2=new THREE.Group();g.add(h1);g.add(h2);add(h1,holo(Bx(.05,.62,.02),ACC),0,.31,0);add(h2,holo(Bx(.04,.42,.02),INK),0,.21,0);var en=[];for(var i=0;i<3;i++)en.push(add(g,holo(Bx(.42,.28,.02),INK)));return{g:g,u:function(t){h1.rotation.z=-t*5;h2.rotation.z=-t*.6;en.forEach(function(e,i){var an=t*.8+i*2.09;e.position.set(Math.cos(an)*1.5,Math.sin(an)*.9,0);e.rotation.z=an*.3})}}},
+plant:function(){var g=new THREE.Group();add(g,holo(Cy(.42,.3,.5,10),INK),0,-.6,0);var p=new THREE.Group();p.position.y=-.35;g.add(p);add(p,holo(Cy(.03,.03,1.2,6),INK),0,.6,0);[[.3,.35,.5],[-.3,.6,-.6],[.32,.85,.5],[-.3,1.05,-.5]].forEach(function(l){var s2=add(p,holo(new THREE.SphereGeometry(.2,6,4),INK,1),l[0],l[1],0);s2.scale.set(1.4,.35,.8);s2.rotation.z=l[2]});var f=add(p,holo(Ic(.18,0),ACC),0,1.3,0);return{g:g,u:function(t,a,age){var k=Math.min(1,age*.6);p.scale.set(1,.05+.95*k,1);f.scale.setScalar(k*k);g.rotation.y=t*.5;p.rotation.z=Math.sin(t*2)*.04}}},
+ledger:function(){var g=new THREE.Group(),b=new THREE.Group();g.add(b);add(b,holo(Bx(.95,1.2,.12),INK),0,0,-.1);add(b,holo(Bx(.9,1.14,.1),INK),0,0,.02);add(b,holo(Bx(.4,.06,.02),ACC),0,.35,.1);for(var i=0;i<4;i++)add(b,holo(Bx(.6,.02,.02),INK),0,.15-i*.2,.1);var c=add(g,holo(Cy(.35,.35,.06,16),ACC),1.1,-.2,0);c.rotation.x=1.2;return{g:g,u:function(t){b.rotation.y=Math.sin(t)*.5;c.rotation.z=t*3}}},
+notes:function(){var g=new THREE.Group(),n=[];for(var i=0;i<5;i++)n.push(add(g,holo(Bx(.7,.7,.02),i===2?ACC:INK)));return{g:g,u:function(t,a,age){var f=Math.min(1,age*1.2);n.forEach(function(o,i){var an=(i-2)*.38*f+Math.sin(t+i)*.04;o.position.set(Math.sin(an)*1.1,Math.cos(an)*.2*f-.1,i*.03);o.rotation.z=-an})}}},
+model:function(){var g=new THREE.Group(),a=add(g,holo(Ic(.85,1),INK,1)),b=add(g,holo(Ic(.4,0),ACC)),r=add(g,holo(Tr(1.2,.004,64),INK,1));return{g:g,u:function(t,x){a.rotation.y=t*.6;a.rotation.x=t*.3;b.scale.setScalar(1+x*.6);r.rotation.x=1.2+t*.5}}},
+tests:function(){var g=new THREE.Group(),c=[];for(var i=0;i<12;i++){var cell=new THREE.Group(),w=holo(Bx(.28,.28,.28),INK),sd=new THREE.Mesh(Bx(.2,.2,.2),new THREE.MeshBasicMaterial({color:ACC}));sd.visible=false;cell.add(w);cell.add(sd);cell.position.set((i%4-1.5)*.5,(1-Math.floor(i/4))*.5,0);g.add(cell);c.push({w:w,s:sd})}return{g:g,u:function(t,a,age){var n=Math.floor(age*7);c.forEach(function(o,i){o.s.visible=i<n;o.w.rotation.y=i<n?0:t})}}},
+bars:function(){var g=new THREE.Group(),b=[];for(var i=0;i<5;i++){var geo=Bx(.28,1,.28);geo.translate(0,.5,0);b.push(add(g,holo(geo,i===4?ACC:INK),(i-2)*.45,-.7,0))}return{g:g,u:function(t,a,age){b.forEach(function(o,i){var k=Math.max(0,Math.min(1,age*1.1-i*.14));k=1-Math.pow(1-k,3);o.scale.y=.02+k*(.4+i*.34)});g.rotation.y=Math.sin(t*.6)*.5}}},
+tower:function(){var g=new THREE.Group(),sl=[];for(var i=0;i<4;i++)sl.push(add(g,holo(Bx(1.3,.26,1.3),i===3?ACC:INK),0,2,0));return{g:g,u:function(t,a,age){sl.forEach(function(o,i){var k=Math.max(0,Math.min(1,age*1.3-i*.25));k=1-Math.pow(1-k,3);o.position.y=(-.6+i*.38)+(1-k)*2.2});g.rotation.y=t*.5}}},
+rocket:function(){var g=new THREE.Group(),r=new THREE.Group();g.add(r);add(r,holo(Cy(.22,.22,.9,10),INK));add(r,holo(new THREE.ConeGeometry(.22,.4,10),ACC),0,.65,0);[1,-1].forEach(function(s2){var f=add(r,holo(Bx(.28,.3,.03),INK),s2*.28,-.35,0);f.rotation.z=-s2*.3});var fl=add(r,holo(new THREE.ConeGeometry(.12,.4,6),ACC),0,-.7,0);fl.rotation.x=Math.PI;return{g:g,u:function(t,a,age){r.position.y=-.5+Math.min(1,age*.5)+Math.sin(t*3)*.05;r.rotation.z=Math.sin(t*2)*.08;fl.scale.y=.7+Math.abs(Math.sin(t*20))*.8}}},
+team:function(){var g=new THREE.Group(),h=[];for(var i=0;i<6;i++){var p2=new THREE.Group(),an=i*1.047;p2.position.set(Math.cos(an),0,Math.sin(an));g.add(p2);add(p2,holo(Cy(.14,.18,.5,8),INK),0,-.25,0);h.push(add(p2,holo(Ic(.14,0),i===0?ACC:INK),0,.1,0))}return{g:g,u:function(t){g.rotation.y=t*.5;h.forEach(function(o,i){o.position.y=.1+Math.abs(Math.sin(t*2+i))*.12})}}},
+mail:function(){var g=new THREE.Group();add(g,holo(Bx(1.3,.85,.05),INK));[1,-1].forEach(function(s2){var f=add(g,holo(Bx(.78,.03,.03),ACC),s2*.33,.2,.03);f.rotation.z=-s2*.55});return{g:g,u:function(t){g.rotation.y=Math.sin(t*1.2)*.5;g.rotation.z=Math.sin(t*.9)*.08;g.position.y=Math.sin(t*2)*.08}}},
+person:function(){var g=new THREE.Group();add(g,holo(Ic(.3,1),INK,1),0,.75,0);add(g,holo(Cy(.3,.45,.85,10),INK));add(g,holo(Tr(.14,.01,24),ACC,1),0,.12,.42);return{g:g,u:function(t){g.rotation.y=Math.sin(t*.8)*.6}}},
+voice:function(){var g=new THREE.Group(),r=[];for(var i=0;i<4;i++)r.push(add(g,holo(Tr(.35+i*.28,.006,64),i===0?ACC:INK,1)));return{g:g,u:function(t,a){r.forEach(function(o,i){var sc=1+a*.5*(i%2?1:-.5)+Math.sin(t*3-i)*.05;o.scale.set(sc,sc,1)});g.rotation.x=-.5+Math.sin(t)*.1}}},
+phone:function(){var g=new THREE.Group();add(g,holo(Bx(.6,1.1,.07),INK));var chip=add(g,holo(Bx(.28,.28,.05),ACC),0,.05,.05);return{g:g,u:function(t,a){g.rotation.y=Math.sin(t*.9)*.7;chip.scale.setScalar(1+a*.5+Math.sin(t*5)*.1)}}},
+hub:function(){var g=new THREE.Group();add(g,holo(Ic(.3,0),ACC));[[-1,.6],[1,.6],[-1,-.6],[1,-.6]].forEach(function(q){add(g,holo(Bx(.3,.3,.3),INK),q[0]*.95,q[1]*.9,0);g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3(q[0]*.95,q[1]*.9,0)]),lm(INK)))});return{g:g,u:function(t){g.rotation.y=Math.sin(t*.7)*.6;g.rotation.x=Math.sin(t*.5)*.2}}}
+};
+var objs=[],SLOTS=[0,-3.2,3.2];
+function labelSprite(txt){var k2=document.createElement('canvas');k2.width=512;k2.height=96;var x2=k2.getContext('2d');x2.font='900 54px Doto,"DM Mono",monospace';x2.textAlign='center';x2.fillStyle=dark?'#f4f3ef':'#0b0b0c';x2.fillText(txt,256,64);var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(k2),transparent:true,depthWrite:false}));sp.scale.set(2.4,.45,1);return sp}
+function spawnObj(type,label){if(!B[type])return;var sf=innerWidth<780?.5:1,used={},slot=-1;objs.forEach(function(o){if(!o.die)used[o.slot]=1});[0,1,2].forEach(function(i){if(slot<0&&!used[i])slot=i});
+if(slot<0){var live=objs.filter(function(o){return !o.die});live[0].die=performance.now();slot=live[0].slot}
+var b=B[type](),h=new THREE.Group();h.add(b.g);var ls=labelSprite(label);ls.position.y=-1.35;h.add(ls);h.position.x=SLOTS[slot]*sf;h.scale.setScalar(0);stage.add(h);objs.push({h:h,u:b.u,born:performance.now(),die:0,slot:slot})}
+function clearStage(){var n=performance.now();objs.forEach(function(o){if(!o.die)o.die=n})}
+onCue=spawnObj;onClear=clearStage;
+function ease(t){var c1=1.70158,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)}
+function stageUpdate(T,A){var n=performance.now(),m2=innerWidth<780?.62:1;for(var i=objs.length-1;i>=0;i--){var o=objs[i],age=(n-o.born)/1000,sc;if(o.die){var d=(n-o.die)/450;sc=Math.max(0,1-d);if(d>=1){stage.remove(o.h);objs.splice(i,1);continue}}else{sc=ease(Math.min(1,age/.7));if(age>16&&state!=='speaking')o.die=n}o.h.scale.setScalar(sc*m2);o.u(T,A,age)}}
+var sig2=2*5*5;
+function loop(){requestAnimationFrame(loop);var T=performance.now()/1000;
+var A=amp(T);hist.unshift(A);hist.pop();
+var tg=AC[state]||AC.idle;for(var q=0;q<3;q++)cur[q]+=(tg[q]-cur[q])*.12;
+var P=g.attributes.position,Cc=g.attributes.color;
+for(var r=0;r<ROWS;r++){var a=hist[r*3],fade=1-r/ROWS*.88;for(var c=0;c<COLS;c++){var i=r*COLS+c,xx=(c-COLS/2)*DX,e=Math.exp(-xx*xx/sig2),kk=.5+.5*Math.sin(c*.55+r*.3)*Math.sin(c*.21-r*.45+1.3),y=a*3.8*e*kk+.015*Math.sin(c*.8+r*.9+T*.5),t=Math.min(1,y/1.6);
+P.array[i*3+1]=y;var cr=BASE+(cur[0]-BASE)*t,cg=BASE+(cur[1]-BASE)*t,cb=BASE+(cur[2]-BASE)*t;
+Cc.array[i*3]=BG+(cr-BG)*fade;Cc.array[i*3+1]=BG+(cg-BG)*fade;Cc.array[i*3+2]=BG+(cb-BG)*fade}}
+P.needsUpdate=true;Cc.needsUpdate=true;
+C.position.set(mx*2,3.5+my*-.8,7.2);C.lookAt(0,.5,-5.5);
+stageUpdate(T,A);R.render(S,C)}
+loop();
+}catch(err){cv.style.display='none'}
+})();
+</script>
+</body>
+</html>

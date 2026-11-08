@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Talk to My Work</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body data-s="idle">
+  <canvas id="gl" aria-hidden="true"></canvas>
+
+  <div class="top">
+    <b class="dot">AARAV SHARMA<span>♑︎</span></b>
+    <div class="status dot" aria-live="polite">
+      <i></i>
+      <span id="stx">IDLE</span>
+    </div>
+  </div>
+
+  <div class="cap" id="cap">
+    <div class="you" id="you" aria-live="polite"></div>
+    <div class="ai" id="ai" aria-live="polite"></div>
+  </div>
+
+  <div class="deck">
+    <div class="chips" id="chips" role="group" aria-label="Questions you can tap instead of speaking"></div>
+    <button class="mic" id="mic" type="button" aria-label="Tap and speak">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="9" y="3" width="6" height="11" rx="3"/>
+        <path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>
+      </svg>
+    </button>
+    <div class="opts" id="opts">
+      <button type="button" id="oc" aria-pressed="true">Captions on</button>
+      <button type="button" id="ov">Voice</button>
+      <button type="button" id="os">Speed 1x</button>
+      <button type="button" id="oh" aria-pressed="false">Hands-free off</button>
+    </div>
+  </div>
+
+  <div class="intro" id="intro">
+    <h1 class="dot">TALK TO<br>MY <em>WORK.</em></h1>
+    <p>No menus. No scrolling. Ask me out loud about Aarav's AI products, skills and results, and I'll answer in my own voice.</p>
+    <div class="trend" aria-label="Trending in AI right now">
+      <span><b>Trending now</b></span>
+      <span>Agentic AI</span>
+      <span>MCP</span>
+      <span>Voice agents</span>
+      <span>On-device models</span>
+      <span>Evals</span>
+    </div>
+    <button class="begin" id="begin" type="button">Tap to begin</button>
+    <small>Best in Chrome or Edge, with sound on and the microphone allowed.</small>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
