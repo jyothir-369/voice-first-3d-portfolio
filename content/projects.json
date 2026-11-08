@@ -1,0 +1,265 @@
+{
+  "featured": [
+    {
+      "id": "regulatory-rag-assistant",
+      "name": "Regulatory RAG Assistant",
+      "shortName": "Regulatory RAG",
+      "description": "Enterprise-grade hybrid RAG engine for RBI, SEBI, and Basel Committee regulatory documentation",
+      "longDescription": "Clinical RAG assistant with auditable LLM reasoning and source traceability over medical and regulatory documents",
+      "domain": "Clinical AI / RegTech",
+      "tech": ["Python", "LangChain", "FastAPI", "ChromaDB", "RAG"],
+      "features": [
+        "Auditable LLM reasoning chains",
+        "Source traceability for compliance",
+        "Hybrid search (semantic + keyword)",
+        "Enterprise-grade architecture"
+      ],
+      "url": "https://github.com/jyothir-369/regulatory-rag-assistant",
+      "stars": 0,
+      "metrics": {
+        "accuracy": "NEEDS INPUT",
+        "users": "NEEDS INPUT",
+        "latency": "NEEDS INPUT"
+      },
+      "status": "active",
+      "category": "ai-ml"
+    },
+    {
+      "id": "ticket-triage-agent",
+      "name": "Ticket Triage Agent",
+      "shortName": "Triage Agent",
+      "description": "Production-ready Support-Ticket Triage Agent (LangGraph + RAG + FastAPI + Human-in-the-Loop)",
+      "longDescription": "Automated support ticket classification and routing system with human oversight capabilities",
+      "domain": "Enterprise AI",
+      "tech": ["Python", "LangGraph", "RAG", "FastAPI", "Multi-Agent"],
+      "features": [
+        "Automated ticket classification",
+        "Human-in-the-loop workflows",
+        "Priority scoring",
+        "Response suggestion engine"
+      ],
+      "url": "https://github.com/jyothir-369/ticket-triage-agent",
+      "stars": 1,
+      "metrics": {
+        "accuracy": "NEEDS INPUT",
+        "ticketsProcessed": "NEEDS INPUT"
+      },
+      "status": "active",
+      "category": "ai-ml"
+    },
+    {
+      "id": "point-cloud-processing",
+      "name": "Point Cloud Processing Pipeline",
+      "shortName": "Point Cloud",
+      "description": "3D point cloud processing pipeline using Open3D for visualization, filtering, registration, segmentation, and surface reconstruction",
+      "longDescription": "Complete 3D processing pipeline with LiDAR-style workflows for robotics and computer vision applications. Includes voxel filtering, ICP registration, and BPA surface reconstruction.",
+      "domain": "Computer Vision / 3D",
+      "tech": ["Python", "Open3D", "NumPy", "OpenCV"],
+      "features": [
+        "Voxel filtering and downsampling",
+        "ICP (Iterative Closest Point) registration",
+        "BPA surface reconstruction",
+        "LiDAR-style workflows"
+      ],
+      "url": "https://github.com/jyothir-369/point-cloud-processing-open3d",
+      "stars": 3,
+      "metrics": {
+        "processingSpeed": "NEEDS INPUT",
+        "accuracy": "NEEDS INPUT"
+      },
+      "status": "active",
+      "category": "computer-vision"
+    },
+    {
+      "id": "hoi-recognition",
+      "name": "Hand-Object Interaction Recognition",
+      "shortName": "HOI Recognition",
+      "description": "Real-time Hand-Object Interaction (HOI) Recognition Pipeline using YOLO + MediaPipe + OpenCV",
+      "longDescription": "Real-time computer vision pipeline for detecting and analyzing hand-object interactions in video streams",
+      "domain": "Computer Vision / Robotics",
+      "tech": ["Python", "YOLO", "MediaPipe", "OpenCV"],
+      "features": [
+        "Real-time hand tracking",
+        "Object detection and tracking",
+        "Interaction classification",
+        "Video stream processing"
+      ],
+      "url": "https://github.com/jyothir-369/hoi-recognition-pipeline",
+      "stars": 2,
+      "metrics": {
+        "fps": "NEEDS INPUT",
+        "accuracy": "NEEDS INPUT"
+      },
+      "status": "active",
+      "category": "computer-vision"
+    },
+    {
+      "id": "braille-ai-pipeline",
+      "name": "Braille AI Pipeline",
+      "shortName": "Braille AI",
+      "description": "Data pipeline for processing unstructured documents into Braille-accessible formats using OCR, text cleaning, JSON structuring, and Liblouis translation",
+      "longDescription": "Hindi–Bharati Braille NLP translation pipeline for visually impaired users. Built for accessibility and inclusive AI.",
+      "domain": "Inclusive AI / Accessibility",
+      "tech": ["Python", "Transformers", "NLP", "OCR", "Liblouis"],
+      "features": [
+        "Hindi to Bharati Braille translation",
+        "OCR for document processing",
+        "Automated text cleaning",
+        "Structured output generation"
+      ],
+      "url": "https://github.com/jyothir-369/braille-ai-pipeline",
+      "stars": 0,
+      "impact": "Built for visually impaired users in India",
+      "metrics": {
+        "accuracy": "NEEDS INPUT",
+        "documentsProcessed": "NEEDS INPUT"
+      },
+      "status": "active",
+      "category": "nlp",
+      "socialImpact": true
+    },
+    {
+      "id": "geospatial-segmentation",
+      "name": "Geospatial Deep Learning Segmentation",
+      "shortName": "Geospatial AI",
+      "description": "Deep learning-based satellite image segmentation system for extracting buildings and roads using U-Net architecture",
+      "longDescription": "Production-grade segmentation system with training pipeline, inference API, and GeoJSON generation for GIS applications",
+      "domain": "Geospatial AI",
+      "tech": ["Python", "PyTorch", "U-Net", "GDAL", "GeoJSON"],
+      "features": [
+        "Building and road extraction",
+        "U-Net architecture",
+        "GeoJSON output for GIS",
+        "Training and inference pipelines"
+      ],
+      "url": "https://github.com/jyothir-369/geospatial-deep-learning-segmentation",
+      "stars": 0,
+      "metrics": {
+        "iou": "NEEDS INPUT",
+        "imagesProcessed": "NEEDS INPUT"
+      },
+      "status": "active",
+      "category": "computer-vision"
+    },
+    {
+      "id": "smart-traffic-ai",
+      "name": "Smart Traffic AI System",
+      "shortName": "Traffic AI",
+      "description": "Real-time AI-powered Smart Traffic Control & Surveillance System using YOLO, OpenCV, and Raspberry Pi",
+      "longDescription": "Complete traffic management system with vehicle detection, violation tracking, ANPR, and dynamic signal optimization with cloud-based analytics dashboard",
+      "domain": "Smart Cities",
+      "tech": ["Python", "YOLOv8", "OpenCV", "FastAPI", "Raspberry Pi"],
+      "features": [
+        "Real-time vehicle detection",
+        "Violation tracking",
+        "Automatic Number Plate Recognition (ANPR)",
+        "Dynamic traffic signal optimization",
+        "Cloud-based analytics dashboard"
+      ],
+      "url": "https://github.com/jyothir-369/smart-traffic-ai-system",
+      "stars": 0,
+      "metrics": {
+        "detectionAccuracy": "NEEDS INPUT",
+        "processingSpeed": "NEEDS INPUT"
+      },
+      "status": "active",
+      "category": "computer-vision",
+      "socialImpact": true
+    },
+    {
+      "id": "production-rag-engine",
+      "name": "Production-Grade RAG Engine",
+      "shortName": "RAG Engine",
+      "description": "Production-grade RAG system for PDF ingestion and grounded Q&A using Gemini, Qdrant, FastAPI, Streamlit, and Inngest",
+      "longDescription": "Enterprise RAG architecture with PDF processing, vector search, and real-time Q&A capabilities",
+      "domain": "Enterprise AI",
+      "tech": ["Python", "Gemini", "Qdrant", "FastAPI", "Streamlit", "Inngest"],
+      "features": [
+        "PDF ingestion pipeline",
+        "Vector search with Qdrant",
+        "Grounded question answering",
+        "Streamlit dashboard",
+        "Inngest workflow orchestration"
+      ],
+      "url": "https://github.com/jyothir-369/production-grade-rag-engine",
+      "stars": 0,
+      "metrics": {
+        "queryLatency": "NEEDS INPUT",
+        "documentsIndexed": "NEEDS INPUT"
+      },
+      "status": "active",
+      "category": "ai-ml"
+    }
+  ],
+  "other": [
+    {
+      "id": "langgraph-orchestrator",
+      "name": "LangGraph Workflow Orchestrator",
+      "description": "Production-oriented LangGraph framework for stateful multi-agent workflows with conditional routing, parallel execution, iterative refinement, and human-in-the-loop orchestration",
+      "domain": "Multi-Agent AI",
+      "tech": ["Python", "LangGraph", "Multi-Agent"],
+      "url": "https://github.com/jyothir-369/langgraph-workflow-orchestrator",
+      "stars": 0,
+      "status": "active",
+      "category": "ai-ml"
+    },
+    {
+      "id": "marketplace-fulfillment",
+      "name": "Marketplace Order Fulfillment",
+      "description": "Production-grade multi-vendor marketplace backend demonstrating transactional checkout, concurrency-safe inventory, asynchronous vendor fulfillment, reconciliation, and zero-downtime migrations",
+      "domain": "Backend Engineering",
+      "tech": ["TypeScript", "Node.js", "PostgreSQL", "Redis"],
+      "url": "https://github.com/jyothir-369/marketplace-order-fulfillment",
+      "stars": 0,
+      "status": "active",
+      "category": "backend"
+    },
+    {
+      "id": "enterprise-ai-copilot",
+      "name": "Enterprise AI Copilot",
+      "description": "Production-grade, multi-agent AI operations platform for real-time observability, knowledge retrieval, and engineering decision support",
+      "domain": "Enterprise AI",
+      "tech": ["TypeScript", "Multi-Agent", "Observability"],
+      "url": "https://github.com/jyothir-369/enterprise-ai-copilot",
+      "stars": 0,
+      "status": "active",
+      "category": "ai-ml"
+    },
+    {
+      "id": "chronos-scheduling",
+      "name": "Chronos Appointment Scheduling",
+      "description": "Timezone-safe appointment scheduling platform with concurrency-safe booking, DST-aware availability, idempotent reminders, and cancellation policies",
+      "domain": "Backend Engineering",
+      "tech": ["TypeScript", "Node.js", "PostgreSQL"],
+      "url": "https://github.com/jyothir-369/chronos-appointment-scheduling",
+      "stars": 0,
+      "status": "active",
+      "category": "backend"
+    },
+    {
+      "id": "multi-tenant-saas",
+      "name": "Multi-Tenant SaaS Invoicing",
+      "description": "Production-ready multi-tenant SaaS platform for invoicing, billing, customer management, subscriptions, and payments",
+      "domain": "SaaS / Backend",
+      "tech": ["TypeScript", "Node.js", "PostgreSQL"],
+      "url": "https://github.com/jyothir-369/multi-tenant-saas-invoicing-billing",
+      "stars": 0,
+      "status": "active",
+      "category": "backend"
+    }
+  ],
+  "categories": {
+    "ai-ml": "AI/ML & Generative AI",
+    "computer-vision": "Computer Vision & 3D",
+    "nlp": "Natural Language Processing",
+    "backend": "Backend & Full-Stack",
+    "data-engineering": "Data Engineering"
+  },
+  "metadata": {
+    "totalProjects": 42,
+    "featuredCount": 8,
+    "lastUpdated": "2026-11-08",
+    "verified": true,
+    "sources": ["GitHub repositories analysis"]
+  }
+}

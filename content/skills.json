@@ -1,0 +1,152 @@
+{
+  "languages": {
+    "primary": ["Python", "TypeScript", "JavaScript"],
+    "secondary": ["SQL", "Bash", "C++", "Rust", "Dart"],
+    "proficiency": {
+      "Python": "expert",
+      "TypeScript": "advanced",
+      "JavaScript": "advanced",
+      "SQL": "advanced",
+      "Bash": "intermediate"
+    }
+  },
+  "aiMl": {
+    "frameworks": [
+      "PyTorch",
+      "TensorFlow",
+      "HuggingFace Transformers",
+      "LangChain",
+      "LangGraph",
+      "scikit-learn",
+      "OpenCV",
+      "Open3D",
+      "MediaPipe"
+    ],
+    "models": [
+      "YOLO (v5, v8)",
+      "U-Net",
+      "Transformers (BERT, GPT, T5)",
+      "OpenAI GPT-3.5/4",
+      "Gemini"
+    ],
+    "specializations": [
+      "RAG (Retrieval-Augmented Generation)",
+      "Multi-Agent Systems",
+      "Computer Vision",
+      "Natural Language Processing",
+      "3D Point Cloud Processing",
+      "Fine-tuning & RLHF",
+      "Prompt Engineering"
+    ],
+    "techniques": [
+      "Vector similarity search",
+      "Semantic embeddings",
+      "Object detection & tracking",
+      "Image segmentation",
+      "OCR & document processing",
+      "LLM orchestration",
+      "Agent tool-calling"
+    ]
+  },
+  "vectorDatabases": [
+    "ChromaDB",
+    "Pinecone",
+    "FAISS",
+    "Qdrant",
+    "pgvector"
+  ],
+  "backend": {
+    "frameworks": ["FastAPI", "Node.js", "Express", "Flask"],
+    "databases": ["PostgreSQL", "MongoDB", "Redis"],
+    "messaging": ["Kafka", "RabbitMQ"],
+    "api": ["REST", "GraphQL", "gRPC", "WebSockets"]
+  },
+  "infrastructure": {
+    "cloud": ["AWS", "GCP (limited)"],
+    "containerization": ["Docker"],
+    "orchestration": ["NEEDS INPUT - Kubernetes experience?"],
+    "ci-cd": ["GitHub Actions", "NEEDS INPUT"]
+  },
+  "dataEngineering": {
+    "pipelines": [
+      "ETL pipeline design",
+      "Data validation automation",
+      "Stream processing"
+    ],
+    "tools": [
+      "Pandas",
+      "NumPy",
+      "Apache Kafka",
+      "NEEDS INPUT - Airflow/Spark experience?"
+    ],
+    "specialties": [
+      "Automated data validation",
+      "NLP dataset curation",
+      "Data quality standards"
+    ]
+  },
+  "frontend": {
+    "frameworks": ["React", "Next.js", "Streamlit"],
+    "mobile": ["Flutter (basic)"],
+    "styling": ["Tailwind CSS", "NEEDS INPUT"]
+  },
+  "tools": {
+    "version-control": ["Git", "GitHub"],
+    "editors": ["VS Code", "NEEDS INPUT"],
+    "collaboration": ["NEEDS INPUT - Jira, Slack, Notion?"]
+  },
+  "methodology": {
+    "practices": [
+      "Test-Driven Development (TDD)",
+      "CI/CD pipelines",
+      "Documentation-first",
+      "Code review",
+      "Agile methodology"
+    ],
+    "focus": [
+      "Production-grade code",
+      "Explainable AI",
+      "Auditable systems",
+      "Accessibility",
+      "Social impact"
+    ]
+  },
+  "research": {
+    "areas": [
+      "LLM fine-tuning and RLHF",
+      "3D scene understanding (NeRF, Gaussian Splatting)",
+      "AI governance for public-sector deployment",
+      "Inclusive AI for accessibility"
+    ],
+    "publications": [
+      {
+        "title": "Driver Fatigue Detection System",
+        "type": "IEEE Manuscript",
+        "status": "Published/In-Progress",
+        "accuracy": "96.8%",
+        "year": "2024/2025",
+        "notes": "NEEDS INPUT - publication status, DOI, co-authors"
+      }
+    ]
+  },
+  "strengths": [
+    "End-to-end AI system design",
+    "RAG pipeline architecture",
+    "Multi-agent orchestration",
+    "Production deployment",
+    "Technical documentation",
+    "Problem-solving mindset",
+    "Social impact focus"
+  ],
+  "learning": [
+    "Advanced LLM fine-tuning techniques",
+    "3D reconstruction (NeRF, Gaussian Splatting)",
+    "AI governance frameworks",
+    "Scalable distributed systems"
+  ],
+  "metadata": {
+    "lastUpdated": "2026-11-08",
+    "verified": true,
+    "sources": ["GitHub profile analysis", "Project repository inspection"]
+  }
+}

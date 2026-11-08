@@ -1,0 +1,113 @@
+{
+  "achievements": [
+    {
+      "id": "hackathon-2025-winner",
+      "title": "1st Place — Hackathon 2025",
+      "type": "competition",
+      "date": "2025",
+      "rank": 1,
+      "description": "Won first place at Hackathon 2025",
+      "details": "NEEDS INPUT - Event name, project details, team size, judges",
+      "impact": "NEEDS INPUT",
+      "verified": true,
+      "note": "Mentioned in GitHub bio, details need elaboration"
+    },
+    {
+      "id": "braille-pipeline",
+      "title": "Hindi–Bharati Braille NLP Pipeline",
+      "type": "social-impact",
+      "date": "2024",
+      "description": "Built assistive technology pipeline for visually impaired users in India",
+      "impact": "Accessibility tool for visually impaired Hindi speakers",
+      "technology": ["Python", "NLP", "Liblouis", "OCR"],
+      "verified": true
+    },
+    {
+      "id": "knowai-internship",
+      "title": "AI Intern at Know AI",
+      "type": "experience",
+      "date": "June 2026 - August 2026",
+      "duration": "3 months",
+      "description": "NEEDS INPUT - responsibilities and achievements",
+      "achievements": ["NEEDS INPUT"],
+      "verified": true
+    },
+    {
+      "id": "flickdone-internship",
+      "title": "Data Engineer Intern at flickDone",
+      "type": "experience",
+      "date": "June 2025 - August 2025",
+      "duration": "3 months",
+      "description": "Engineered automated data validation pipelines and curated NLP datasets",
+      "achievements": [
+        "Built automated data validation pipelines from scratch",
+        "Processed 50,000+ records with automated validation",
+        "Achieved 70% reduction in manual verification time",
+        "Improved pipeline execution speed by 25%",
+        "Curated Hindi-Braille NLP datasets for accessibility"
+      ],
+      "verified": true
+    }
+  ],
+  "metrics": {
+    "github": {
+      "publicRepositories": 42,
+      "followers": 15,
+      "totalStars": 6,
+      "mostStarredProject": {
+        "name": "point-cloud-processing-open3d",
+        "stars": 3
+      }
+    },
+    "projects": {
+      "totalProjects": 42,
+      "featuredProjects": 8,
+      "productionGrade": "NEEDS INPUT - how many in production?",
+      "openSource": 42,
+      "testCoverage": {
+        "note": "Ledgerly project mentioned with 174 tests across 21 suites",
+        "project": "NEEDS INPUT - cannot locate Ledgerly repository to verify"
+      }
+    },
+    "flickdone": {
+      "recordsProcessed": "50,000+",
+      "manualVerificationReduction": "70%",
+      "pipelineSpeedImprovement": "25%"
+    },
+    "technical": {
+      "linesOfCode": "NEEDS INPUT",
+      "commits": "NEEDS INPUT",
+      "pullRequests": "NEEDS INPUT",
+      "issuesClosed": "NEEDS INPUT"
+    },
+    "impact": {
+      "usersServed": "NEEDS INPUT",
+      "systemsInProduction": "NEEDS INPUT",
+      "uptimePercentage": "NEEDS INPUT"
+    }
+  },
+  "recognition": {
+    "awards": [
+      {
+        "title": "Hackathon 2025 Winner",
+        "organization": "NEEDS INPUT",
+        "year": 2025,
+        "placement": "1st"
+      }
+    ],
+    "publications": "EXCLUDED - per user request, no research papers or manuscripts",
+    "certifications": "NEEDS INPUT - any certifications?",
+    "speaking": "NEEDS INPUT - any talks or presentations?"
+  },
+  "testimonials": "NEEDS INPUT - client or colleague testimonials?",
+  "metadata": {
+    "lastUpdated": "2026-11-08T13:18:55.902Z",
+    "verified": "partial",
+    "sources": [
+      "GitHub profile",
+      "Project analysis",
+      "User-provided confirmation: flickDone metrics, education, dates"
+    ],
+    "notes": "flickDone metrics verified. Ledgerly test metrics cannot be located in GitHub repos. Know AI internship details needed."
+  }
+}

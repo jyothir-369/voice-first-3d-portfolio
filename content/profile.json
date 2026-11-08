@@ -1,0 +1,107 @@
+{
+  "name": "Jyothir Raghavalu Bhogi",
+  "displayName": "Jyothir Raghavalu Bhogi",
+  "shortName": "Jyothir",
+  "title": "AI Engineer | Data Engineer | Full-Stack Builder",
+  "tagline": "Building AI systems that matter",
+  "bio": "Software Engineer at the intersection of AI/ML, Data Engineering, and Scalable Full-Stack Systems — focused on systems that are technically sound and socially meaningful.",
+  "philosophy": "Intelligence should be accessible, inclusive, and auditable.",
+  "location": {
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "country": "India"
+  },
+  "education": {
+    "institution": "Lovely Professional University (LPU)",
+    "degree": "B.Tech",
+    "field": "Computer Science & Engineering",
+    "startDate": "2022-07",
+    "graduationDate": "2026-05",
+    "status": "completed"
+  },
+  "experience": [
+    {
+      "company": "Know AI",
+      "role": "AI Intern",
+      "type": "internship",
+      "startDate": "2026-06",
+      "endDate": "2026-08",
+      "duration": "3 months",
+      "current": false,
+      "responsibilities": ["NEEDS INPUT"],
+      "tech": ["NEEDS INPUT"],
+      "achievements": ["NEEDS INPUT"]
+    },
+    {
+      "company": "flickDone",
+      "role": "Data Engineer Intern",
+      "type": "internship",
+      "startDate": "2025-06",
+      "endDate": "2025-08",
+      "duration": "3 months",
+      "current": false,
+      "responsibilities": [
+        "Engineered automated data validation pipelines from scratch",
+        "Curated datasets for Hindi–Bharati Braille NLP accessibility pipeline",
+        "Improved data quality standards across ingestion workflows"
+      ],
+      "metrics": {
+        "recordsProcessed": "50,000+",
+        "manualVerificationReduction": "70%",
+        "pipelineSpeedImprovement": "25%"
+      },
+      "tech": ["Python", "NLP", "Pipeline Automation", "Data Engineering"]
+    }
+  ],
+  "currentOrganizations": [
+    "flickdone",
+    "KnowAI"
+  ],
+  "interests": [
+    "Generative AI ecosystems",
+    "Multi-agent architectures",
+    "RAG pipelines",
+    "AI for public service",
+    "India-scale impact"
+  ],
+  "specialties": [
+    "RAG (Retrieval-Augmented Generation)",
+    "Multi-Agent AI",
+    "Vector Databases",
+    "Computer Vision",
+    "Natural Language Processing"
+  ],
+  "githubStats": {
+    "username": "jyothir-369",
+    "publicRepos": 42,
+    "followers": 15,
+    "createdAt": "2022-09-18",
+    "verified": true
+  },
+  "contact": {
+    "email": "jyothirraghavalu369@gmail.com",
+    "portfolio": "https://jyothir-369.github.io/BJR/",
+    "github": "https://github.com/jyothir-369",
+    "linkedin": "https://linkedin.com/in/bhogi-jyothir-raghavalu",
+    "twitter": "https://twitter.com/BhogiJyothir",
+    "leetcode": "https://leetcode.com/u/jyothir-369"
+  },
+  "availability": {
+    "status": "Open to AI/ML roles",
+    "lookingFor": [
+      "AI/ML Engineering positions",
+      "Research collaborations",
+      "Open-source contributions"
+    ]
+  },
+  "metadata": {
+    "lastUpdated": "2026-11-08T13:18:17.153Z",
+    "verified": true,
+    "sources": [
+      "GitHub profile: jyothir-369",
+      "Portfolio website: jyothir-369.github.io/BJR",
+      "GitHub repositories analysis",
+      "User-provided confirmation: education, internship dates, metrics"
+    ]
+  }
+}
