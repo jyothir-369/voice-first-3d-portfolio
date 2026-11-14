@@ -134,18 +134,17 @@ function calculateAmplitude(time: number): number {
 }
 
 /**
- * Main render loop
+ * Frame sample for the terrain loop.
+ * The loop itself stops calling this while the tab is hidden.
  */
-function animate(): void {
-  requestAnimationFrame(animate)
-
+function sampleFrame(): { amplitude: number; state: AppState } {
+  if (document.hidden) {
+    return { amplitude: smoothedAmplitude, state: currentState }
+  }
   const time = performance.now() / 1000
   const amplitude = calculateAmplitude(time)
-
-  Terrain.updateTerrain(amplitude, currentState)
-  Terrain.updateCamera()
   Stage.updateStage(time, amplitude)
-  Terrain.render()
+  return { amplitude, state: currentState }
 }
 
 /**
@@ -273,13 +272,14 @@ function init(): void {
       elements.os.hidden = true
     }
 
-    // Start animation loop
-    animate()
+    const stopLoop = Terrain.startTerrainLoop(sampleFrame)
 
     // Cleanup on page hide
     window.addEventListener('pagehide', () => {
       stopSpeaking()
       Meter.stop()
+      stopLoop()
+      Terrain.disposeTerrain()
     })
 
   } catch (error) {

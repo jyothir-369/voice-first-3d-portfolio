@@ -79,7 +79,7 @@ export function getBrowserSupport(): {
   return {
     supported: !!SpeechRecognitionAPI,
     browserName: 'Unknown',
-    recommendation: !!SpeechRecognitionAPI ? 'Voice may work' : 'Use text input instead'
+    recommendation: SpeechRecognitionAPI ? 'Voice may work' : 'Use text input instead'
   }
 }
 
@@ -161,7 +161,7 @@ export function start(lang = 'en-IN'): void {
 
   try {
     recognition.start()
-  } catch (err) {
+  } catch {
     if (onError) {
       const message = ERROR_MESSAGES['failed-to-start'] || "Couldn't start the microphone."
       onError('failed-to-start', message)

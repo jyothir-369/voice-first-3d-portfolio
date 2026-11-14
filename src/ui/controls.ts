@@ -22,14 +22,16 @@ export function setState(state: AppState): void {
   document.body.dataset.s = state
 
   const statusText: Record<AppState, string> = {
-    idle: 'TAP TO TALK',
-    listening: 'LISTENING',
-    speaking: 'SPEAKING',
-    thinking: 'THINKING',
-    intro: 'IDLE'
+    idle: 'Tap to talk',
+    listening: 'Listening',
+    speaking: 'Speaking',
+    thinking: 'Thinking',
+    intro: 'Ready'
   }
 
-  elements.stx.textContent = statusText[state]
+  if (elements.stx) {
+    elements.stx.textContent = statusText[state]
+  }
 }
 
 /**
