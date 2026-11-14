@@ -33,6 +33,7 @@ import * as THREE from 'three'
 export interface StageObject {
   h: THREE.Group // hierarchy (root group)
   u: UpdateFunction // update function
+  d?: () => void // dispose function
   born: number // timestamp when spawned
   die: number // timestamp when marked for removal (0 = alive)
   slot: number // position slot (0, 1, or 2)
@@ -43,6 +44,7 @@ export type UpdateFunction = (_time: number, _amplitude: number, _age: number) =
 export interface ObjectBuilder {
   g: THREE.Group
   u: UpdateFunction
+  d?: () => void // dispose function
 }
 
 export type BuilderFunction = () => ObjectBuilder

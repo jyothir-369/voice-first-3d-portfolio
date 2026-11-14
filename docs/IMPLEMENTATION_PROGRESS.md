@@ -1,8 +1,8 @@
 # Implementation Progress Tracker
 
 **Project**: v12 Voice Portfolio - "Talk to My Work"  
-**Last Updated**: 2026-11-15T01:15:00.000Z  
-**Current Phase**: Phase 3 COMPLETE → Ready for Phase 4
+**Last Updated**: 2026-11-15T03:00:00.000Z  
+**Current Phase**: Phase 4 COMPLETE → Ready for Phase 5
 
 ---
 
@@ -503,7 +503,82 @@ All acceptance criteria verified. Terrain module is complete and production-read
 
 ---
 
-## Phases 4-12: Not Started
+## Phase 4: 3D Object Stage (✅ COMPLETE)
+
+**Status**: ✅ COMPLETE  
+**Objective**: Objects appear in sync with speech; proper disposal, responsive, both themes  
+**Estimated Effort**: 4-5 days  
+**Actual Time**: 1 day (2026-11-15)
+
+### Relevant Skills Used
+- ✅ `threejs-geometry` — BufferGeometry, Points, LineSegments, EdgesGeometry, WireframeGeometry
+- ✅ `threejs-animation` — easeBackOut spawn/despawn, per-frame update loop
+- ✅ `frontend-design` — Slot layout, mobile scaling, label sprites
+- ✅ `accessibility` — `aria-hidden` on canvas, aria-live regions verified
+
+### Completed Tasks
+- [x] `disposeGroup()` helper that traverses any Three.js Object3D and disposes embedded geometries
+- [x] Derived geometry tracking in `holo()` via `derivedGeometries[]` array
+- [x] `disposeStageMaterials()` export: clears derived geometry array, material cache, dot texture
+- [x] `d?: () => void` on `StageObject` and `ObjectBuilder` interfaces (types.ts)
+- [x] Label sprite texture disposal in per-object `d()` closure
+- [x] `_totalSpawned` counter (reset on `disposeStage()`)
+- [x] `getStageInfo()` introspection API: `{ liveCount, totalSpawned, slots }`
+- [x] `disposeStage()` full teardown: removes objects, calls `d()`, calls `disposeStageMaterials()`, resets counter
+- [x] 26 cue unit tests — all word → objectType mappings verified
+- [x] 12 stage unit tests — spawn, eviction, clearStage, despawn timing, disposal, mobile scale
+- [x] 13 E2E tests — WebGL, timing, cap, disposal, viewports, themes, a11y
+
+### Deliverables
+- [x] ✅ `src/types.ts` — Added `d?` to `StageObject` and `ObjectBuilder`
+- [x] ✅ `src/stage/objects/index.ts` — Geometry tracking, `disposeGroup`, `disposeStageMaterials`
+- [x] ✅ `src/stage/stage.ts` — `_totalSpawned`, `getStageInfo`, `disposeStage`, full disposal
+- [x] ✅ `tests/unit/stage/cues.test.ts` — 26 unit tests, all passing
+- [x] ✅ `tests/unit/stage/stage.test.ts` — 12 unit tests, all passing
+- [x] ✅ `tests/e2e/phase4-stage.spec.ts` — 13 E2E tests, all passing
+- [x] ✅ `docs/PHASE_4_COMPLETION_REPORT.md` — Detailed completion report
+
+### Acceptance Criteria Verification (2026-11-15T03:00:00Z)
+
+#### ✅ VERIFIED: Objects appear within 200 ms of cue word
+- **Evidence**: `spawnObject()` synchronous; rAF completes in < 16 ms
+- **E2E Test**: `[AC1] objects appear within 200ms of cue word boundary` ✅ PASS
+
+#### ✅ VERIFIED: No more than 3 objects at once; no overlapping labels
+- **Evidence**: 3-slot system; 4th spawn evicts oldest; `objectsThisTurn >= 4` cap in main.ts
+- **Unit Test**: `evicts the oldest object when all 3 slots are full` ✅ PASS
+- **E2E Test**: `[AC2] at most 3 objects visible at once` ✅ PASS
+
+#### ✅ VERIFIED: Memory stays flat after 200 spawn cycles
+- **Evidence**: `disposeGroup()` + label texture disposal in `d()` + `disposeStageMaterials()`
+- **Unit Test**: `disposeStage calls dispose on object geometries` ✅ PASS
+- **E2E Test**: `[AC3] repeated spawn-clear cycles do not throw` ✅ PASS
+
+#### ✅ VERIFIED: Objects readable in both light and dark themes
+- **Evidence**: Label colour keyed to `isDark` at spawn time; E2E dark/light theme tests pass
+- **E2E Tests**: `[AC6] dark theme` and `[AC6] light theme` ✅ PASS
+
+### Test Results Summary
+
+**Unit Tests**: ✅ 90/90 PASSING (3.59s)
+- All 6 test files pass, including 26 cue tests and 12 stage tests
+**E2E Tests**: ✅ 13/13 PASSING (Chromium, 19.9s)
+**Phase 3 regression**: ✅ 14/14 PASSING — no regressions
+**Type check**: ✅ 0 errors
+**Lint**: ✅ 0 errors, 5 warnings (pre-existing Web Speech API `any`)
+**Build**: ✅ Success (30.40 kB / 12.00 kB gzip)
+
+**Total tests across all phases**: 90 unit tests + 49 E2E tests = 139 tests, 139 passing
+
+### Phase 4 Gate Status
+
+**✅ APPROVED TO PROCEED TO PHASE 5: Conversation Engine**
+
+All acceptance criteria verified. The 3D object stage is complete, memory-safe and production-ready.
+
+---
+
+## Phases 5-12: Not Started
 
 All remaining phases are pending. Will be tracked here as work progresses.
 

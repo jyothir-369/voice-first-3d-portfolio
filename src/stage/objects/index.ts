@@ -43,18 +43,38 @@ ctx.arc(16, 16, 14, 0, Math.PI * 2)
 ctx.fill()
 const dotTexture = new THREE.CanvasTexture(canvas)
 
+// Track derived geometries for disposal
+const derivedGeometries: THREE.BufferGeometry[] = []
+
 function holo(
   geometry: THREE.BufferGeometry,
   color: number,
   wireframe = false
 ): THREE.Group {
   const group = new THREE.Group()
-  const edges = wireframe
+  const derived = wireframe
     ? new THREE.WireframeGeometry(geometry)
     : new THREE.EdgesGeometry(geometry)
-  group.add(new THREE.LineSegments(edges, lineMaterial(color)))
+  derivedGeometries.push(derived)
+  group.add(new THREE.LineSegments(derived, lineMaterial(color)))
   group.add(new THREE.Points(geometry, pointMaterial(color, dotTexture)))
   return group
+}
+
+export function disposeGroup(group: THREE.Object3D): void {
+  group.traverse((obj) => {
+    if (obj instanceof THREE.Mesh || obj instanceof THREE.Points || obj instanceof THREE.LineSegments || obj instanceof THREE.Line) {
+      obj.geometry?.dispose()
+    }
+  })
+}
+
+export function disposeStageMaterials(): void {
+  for (const geo of derivedGeometries) geo.dispose()
+  derivedGeometries.length = 0
+  for (const mat of Object.values(materialCache)) mat.dispose()
+  for (const key of Object.keys(materialCache)) delete materialCache[key]
+  dotTexture.dispose()
 }
 
 function add(parent: THREE.Group, child: THREE.Group, x = 0, y = 0, z = 0): THREE.Group {

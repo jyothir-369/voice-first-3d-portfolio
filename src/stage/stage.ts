@@ -1,10 +1,11 @@
 import * as THREE from 'three'
 import type { StageObject, BuilderFunction } from '@/types'
-import { BUILDERS } from './objects'
+import { BUILDERS, disposeGroup, disposeStageMaterials } from './objects'
 
 const SLOTS = [0, -3.2, 3.2]
 const objects: StageObject[] = []
 let stage: THREE.Group
+let _totalSpawned = 0
 
 /**
  * Initialize the stage
@@ -29,9 +30,10 @@ function createLabelSprite(text: string, isDark: boolean): THREE.Sprite {
   ctx.fillStyle = isDark ? '#f4f3ef' : '#0b0b0c'
   ctx.fillText(text, 256, 64)
 
+  const texture = new THREE.CanvasTexture(canvas)
   const sprite = new THREE.Sprite(
     new THREE.SpriteMaterial({
-      map: new THREE.CanvasTexture(canvas),
+      map: texture,
       transparent: true,
       depthWrite: false
     })
@@ -90,9 +92,17 @@ export function spawnObject(type: string, label: string): void {
   hierarchy.scale.setScalar(0)
   stage.add(hierarchy)
 
+  _totalSpawned++
+
   objects.push({
     h: hierarchy,
     u: built.u,
+    d: () => {
+      disposeGroup(built.g)
+      const mat = (labelSprite.material as THREE.SpriteMaterial)
+      mat.map?.dispose()
+      mat.dispose()
+    },
     born: performance.now(),
     die: 0,
     slot
@@ -139,6 +149,7 @@ export function updateStage(time: number, amplitude: number): void {
       if (elapsed >= 1) {
         if (stage && obj.h) {
           stage.remove(obj.h)
+          obj.d?.()
         }
         objects.splice(i, 1)
         continue
@@ -156,4 +167,29 @@ export function updateStage(time: number, amplitude: number): void {
       obj.u(time, amplitude, age)
     }
   }
+}
+
+/**
+ * Return a snapshot of stage state (for testing and diagnostics)
+ */
+export function getStageInfo(): { liveCount: number; totalSpawned: number; slots: number[] } {
+  const live = objects.filter(o => o && !o.die)
+  return {
+    liveCount: live.length,
+    totalSpawned: _totalSpawned,
+    slots: live.map(o => o.slot)
+  }
+}
+
+/**
+ * Dispose all stage resources: objects, geometries, materials, textures
+ */
+export function disposeStage(): void {
+  for (const obj of objects) {
+    if (obj.h && stage) stage.remove(obj.h)
+    obj.d?.()
+  }
+  objects.length = 0
+  _totalSpawned = 0
+  disposeStageMaterials()
 }
