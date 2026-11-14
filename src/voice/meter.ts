@@ -1,15 +1,35 @@
-const isChrome = /Chrome|Chromium|Edg/.test(navigator.userAgent)
+/**
+ * Browser compatibility detection
+ * Phase 2: task 6 - meter must not conflict with speech recognition
+ */
+function getBrowserSupport(): { canUseMeter: boolean; browserName: string } {
+  const ua = navigator.userAgent
+  const isChrome = /Chrome|Chromium/.test(ua) && !/Edg/.test(ua)
+  const isEdge = /Edg/.test(ua)
+  const isSafari = /Safari/.test(ua) && !/Chrome/.test(ua)
+
+  // Only enable meter on Chrome/Edge where it's confirmed not to conflict
+  return {
+    canUseMeter: isChrome || isEdge,
+    browserName: isChrome ? 'Chrome' : isEdge ? 'Edge' : isSafari ? 'Safari' : 'Other'
+  }
+}
+
+const browserSupport = getBrowserSupport()
 
 let audioContext: AudioContext | null = null
 let analyser: AnalyserNode | null = null
 let mediaStream: MediaStream | null = null
 let dataArray: Float32Array | null = null
+let lastError: string | null = null
 
 /**
- * Initialize microphone meter for Chrome-based browsers
+ * Initialize microphone meter for Chrome/Edge browsers only
+ * Phase 2: task 6 - disable on browsers where it conflicts with recognition
  */
 export async function start(): Promise<void> {
-  if (!isChrome || audioContext || !navigator.mediaDevices) {
+  // Skip if browser doesn't support meter or if already initialized
+  if (!browserSupport.canUseMeter || audioContext || !navigator.mediaDevices) {
     return
   }
 
@@ -24,10 +44,25 @@ export async function start(): Promise<void> {
 
     source.connect(analyser)
     dataArray = new Float32Array(analyser.fftSize)
-  } catch {
-    // Failed to get microphone access
+    lastError = null
+  } catch (err) {
+    lastError = err instanceof Error ? err.message : 'Failed to start meter'
     stop()
   }
+}
+
+/**
+ * Check if meter can be used in this browser
+ */
+export function isSupported(): boolean {
+  return browserSupport.canUseMeter
+}
+
+/**
+ * Get last error if any
+ */
+export function getLastError(): string | null {
+  return lastError
 }
 
 /**
