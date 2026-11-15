@@ -6,6 +6,8 @@
   "description": "Talk to My Work - Voice-first 3D portfolio",
   "scripts": {
     "dev": "vite",
+    "validate-content": "node scripts/validate-content.mjs",
+    "prebuild": "npm run validate-content",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src --max-warnings 5",
