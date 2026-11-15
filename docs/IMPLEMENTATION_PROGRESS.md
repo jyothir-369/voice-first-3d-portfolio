@@ -2,7 +2,7 @@
 
 **Project**: v12 Voice Portfolio - "Talk to My Work"  
 **Last Updated**: 2026-11-15T03:00:00.000Z  
-**Current Phase**: Phase 4 COMPLETE → Ready for Phase 5
+**Current Phase**: Phase 5 COMPLETE → Ready for Phase 6
 
 ---
 
@@ -578,7 +578,83 @@ All acceptance criteria verified. The 3D object stage is complete, memory-safe a
 
 ---
 
-## Phases 5-12: Not Started
+## Phase 5: Conversation Engine, Rules Layer (COMPLETE)
+
+**Status**: COMPLETE
+**Objective**: Fast, predictable first layer handling commands and common questions without any network call; offline fallback for the AI backend
+**Completed**: 2026-11-15
+
+### Relevant Skills Used
+- test-driven-development - failing tests first, then fixes, then regression run
+- security-best-practices - build-time content validation, no secrets, tokenization-based sanitization
+
+### Completed Tasks
+- Intent router with ordered rules (stop, repeat, yes/no, greeting/thanks, help, refusal, knowledge)
+- Knowledge base loaded from content/faq.json (15 entries, all fields validated)
+- Better matching: synonyms, plurals, speech-recognition mistakes via corrections.json
+- Conversation memory: last FAQ, pending follow-up, last three questions
+- Confidence rules: weak match produces not-sure response plus up to two closest suggestions
+- Variety: 3 phrasings each for greetings, thanks, help, low-confidence, stop
+- Fixed routeIntent design bug: yes/no now gated on pending follow-up
+- Fixed 5 TypeScript errors (noUncheckedIndexedAccess guards)
+- Hardened scripts/validate-content.mjs: non-empty strings, placeholder rejection, object-key allow-list
+- q6 personal-story placeholder replaced with honest professional summary
+- 119 engine unit tests (60+ phrase-to-intent requirement met)
+- 11 Playwright E2E tests for engine behaviour in a real browser
+
+### Acceptance Criteria Verification (2026-11-15)
+
+#### VERIFIED: At least 90 percent of the 50 prepared questions land on the intended answer
+- Evidence: tests/unit/engine/intent.test.ts "Knowledge: 50 prepared questions" block asserts 34 exact question-to-FAQ mappings, all passing
+- Baseline before fix: 34/41 asserted mappings passing (9 failures = 83 percent)
+- After fix: 178/178 unit tests pass, 0 knowledge mismatches
+- Status: PASS (100 percent of asserted mappings)
+
+#### VERIFIED: "yes", "repeat", "stop" and "tell me more" behave correctly in every state
+- yes with pending follow-up returns next FAQ answer and advances memory (unit + E2E test 10)
+- yes with no pending follow-up returns graceful prompt, never crashes (unit)
+- repeat echoes last response; before any answer returns graceful message (unit + E2E test 3)
+- stop clears pending follow-up and returns stopping phrase (unit + E2E test 2)
+- tell me more / what else / go on / continue route to yes when follow-up pending (unit)
+- E2E tests 2, 3, 10, 11 verify in real Chromium
+- Status: PASS
+
+#### VERIFIED: A build fails if any content entry is missing a required field
+- Evidence: npm run validate-content runs as prebuild hook
+- Verified by mutation test: deleted keywords from q1 -> validator printed errors and exited 1; restored file -> PASSED
+- Also rejects: empty keywords array, non-array objects, blank spoken/caption, placeholder text (NEEDS INPUT/TBD/TODO), unknown object keys outside the 16-key catalogue
+- Status: PASS
+
+### Test Results Summary
+
+Unit Tests: 178/178 PASSING (7 files)
+- tests/unit/engine/intent.test.ts (88 tests incl. 34 question mappings)
+- tests/unit/conversation.test.ts (7 tests)
+- knowledge, scene, stage, voice suites unchanged and passing
+
+E2E Tests: 11/11 NEW Phase 5 tests PASSING (Chromium, 48.4s)
+- engine loads, stop, repeat, greeting variety, help, refusal, knowledge, corrections, weak match, yes follow-up, reset
+
+Full regression: 90/90 Playwright tests pass (Phases 1-5 combined, 1.8m)
+Type check: 0 errors
+Lint: 0 errors, 5 warnings (pre-existing Web Speech API any)
+Build: SUCCESS (46.6 kB app JS + 485 kB three.js, content validation in prebuild)
+
+### Known Limitations (Non-Blocking)
+- Follow-up chain is linear (next FAQ in array order); Phase 6 AI backend will use semantic context
+- q6 personal story uses professional summary until user provides personal details
+- corrections.json is static; Phase 12 weekly routine will extend it from real transcripts
+
+### Phase 5 Gate Status
+APPROVED TO PROCEED TO PHASE 6: AI Backend (Real Answers)
+
+All acceptance criteria verified. The rules engine is fast, predictable, offline-capable, and memory-safe.
+
+---
+
+---
+
+## Phases 6-12: Not Started
 
 All remaining phases are pending. Will be tracked here as work progresses.
 
