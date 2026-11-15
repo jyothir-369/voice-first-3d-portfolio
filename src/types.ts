@@ -2,6 +2,40 @@
 
 export type AppState = 'idle' | 'listening' | 'speaking' | 'thinking' | 'intro'
 
+export interface FaqEntry {
+  id: string
+  question: string
+  keywords: string[]
+  answer: {
+    spoken: string
+    caption: string
+    objects: string[]
+    followUp: string
+  }
+}
+
+export type IntentType =
+  | 'stop'
+  | 'repeat'
+  | 'yes'
+  | 'no'
+  | 'greeting'
+  | 'thanks'
+  | 'help'
+  | 'refusal'
+  | 'knowledge'
+  | 'unknown'
+
+export interface IntentResult {
+  intent: IntentType
+  response: ResponseData
+  faqId?: string
+  confidence: number
+  suggestions?: string[]
+  objects?: string[]
+  followUp?: string
+}
+
 export interface TopicData {
   k: string // keywords
   s: string // spoken text
