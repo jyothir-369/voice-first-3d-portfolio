@@ -5,6 +5,7 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "resolveJsonModule": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -28,6 +29,6 @@
       "@content/*": ["content/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "api"],
   "exclude": ["tests/e2e/**/*"]
 }
