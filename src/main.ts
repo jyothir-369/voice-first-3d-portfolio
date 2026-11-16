@@ -8,6 +8,7 @@ import * as Terrain from './scene/terrain'
 import * as Stage from './stage/stage'
 import { findCue } from './stage/cues'
 import { respond } from './engine/conversation'
+import { askWithFallback } from './ai/client'
 
 let currentState: AppState = 'intro'
 let bumpEnergy = 0
@@ -65,7 +66,7 @@ function stopSpeaking(): void {
 /**
  * Process user input and generate response
  */
-function processInput(text: string): void {
+async function processInput(text: string): Promise<void> {
   stopSpeaking()
 
   const trimmed = text.trim()
@@ -82,9 +83,14 @@ function processInput(text: string): void {
     return
   }
 
-  const response = respond(trimmed)
-
   setState('thinking')
+
+  // Phase 6 fallback chain: AI answer, else local rules answer, else the
+  // friendly "not sure" reply. askWithFallback never throws.
+  const ai = await askWithFallback(trimmed, { history: [] })
+  const response = ai.source === 'ai'
+    ? { s: ai.say, c: ai.caption }
+    : respond(trimmed)
   cuesShown.clear()
   objectsThisTurn = 0
 
