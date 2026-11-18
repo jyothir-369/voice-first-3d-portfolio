@@ -3,7 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Talk to My Work</title>
+  <title>Talk to My Work — Jyothir Raghavalu Bhogi</title>
+  <meta name="description" content="A voice-first portfolio. Ask Jyothir Raghavalu Bhogi out loud about his AI projects, skills and results, and get answers in his own voice.">
+  <meta name="theme-color" content="#09090a">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ecebe6">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Talk to My Work — Jyothir Raghavalu Bhogi">
+  <meta property="og:description" content="A voice-first 3D portfolio. Ask out loud; get answers grounded in real projects.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Talk to My Work — Jyothir Raghavalu Bhogi">
+  <meta name="twitter:description" content="A voice-first 3D portfolio. Ask out loud; get answers grounded in real projects.">
+  <meta name="twitter:image" content="/og-cover.svg">
+  <meta property="og:image" content="/og-cover.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2309090a'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%23ff3b1f'/%3E%3Ccircle cx='14' cy='20' r='3' fill='%23f4f3ef'/%3E%3Ccircle cx='50' cy='16' r='3' fill='%23f4f3ef'/%3E%3Ccircle cx='52' cy='46' r='3' fill='%23f4f3ef'/%3E%3Ccircle cx='16' cy='48' r='3' fill='%23f4f3ef'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
@@ -11,7 +25,7 @@
   <canvas id="gl" aria-hidden="true"></canvas>
 
   <div class="top">
-    <b class="dot">AARAV SHARMA<span>♑︎</span></b>
+    <b class="dot">JYOTHIR RAGHAVALU BHOGI</b>
     <div class="status dot" role="status" aria-live="polite">
       <i aria-hidden="true"></i>
       <span id="stx">Ready</span>
@@ -36,22 +50,34 @@
       <button type="button" id="ov">Voice</button>
       <button type="button" id="os">Speed 1x</button>
       <button type="button" id="oh" aria-pressed="false">Hands-free off</button>
+      <button type="button" id="ot" aria-pressed="false">Light theme</button>
     </div>
   </div>
 
   <div class="intro" id="intro">
     <h1 class="dot">TALK TO<br>MY <em>WORK.</em></h1>
-    <p>No menus. No scrolling. Ask me out loud about Aarav's AI products, skills and results, and I'll answer in my own voice.</p>
-    <div class="trend" aria-label="Trending in AI right now">
-      <span><b>Trending now</b></span>
-      <span>Agentic AI</span>
-      <span>MCP</span>
-      <span>Voice agents</span>
-      <span>On-device models</span>
-      <span>Evals</span>
+    <p>No menus. No scrolling. Ask me out loud about my AI projects, skills and results, and I'll answer in my own voice.</p>
+    <div class="trend" aria-label="What you can ask about">
+      <span><b>Ask me about</b></span>
+      <span>My projects</span>
+      <span>RAG systems</span>
+      <span>Computer vision</span>
+      <span>Accessibility work</span>
+      <span>My experience</span>
     </div>
     <button class="begin" id="begin" type="button">Tap to begin</button>
-    <small>Best in Chrome or Edge, with sound on and the microphone allowed.</small>
+    <button class="skip-voice" id="skip-voice" type="button" aria-pressed="false">Skip voice, use text</button>
+    <details class="about" id="about">
+      <summary id="about-toggle" role="button" tabindex="0">About</summary>
+      <p>Jyothir Raghavalu Bhogi is an AI engineer in Hyderabad, India. He builds production-grade AI: RAG pipelines, computer vision and accessibility tools. He interned at flickDone and Know AI, and his work is auditable and socially useful.</p>
+      <ul class="about-links">
+        <li><a href="https://github.com/jyothir-369" rel="noopener">GitHub</a></li>
+        <li><a href="https://linkedin.com/in/bhogi-jyothir-raghavalu" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://leetcode.com/u/jyothir-369" rel="noopener">LeetCode</a></li>
+        <li><a href="mailto:jyothirraghavalu369@gmail.com">Email</a></li>
+      </ul>
+    </details>
+    <small>Best in Chrome or Edge. Sound on. Microphone optional.</small>
   </div>
 
   <script type="module" src="/src/main.ts"></script>

@@ -17,9 +17,9 @@
       "url": "https://github.com/jyothir-369/regulatory-rag-assistant",
       "stars": 0,
       "metrics": {
-        "accuracy": "NEEDS INPUT",
-        "users": "NEEDS INPUT",
-        "latency": "NEEDS INPUT"
+        "accuracy": "Omitted at owner request",
+        "users": "Omitted at owner request",
+        "latency": "Omitted at owner request"
       },
       "status": "active",
       "category": "ai-ml"
@@ -41,8 +41,8 @@
       "url": "https://github.com/jyothir-369/ticket-triage-agent",
       "stars": 1,
       "metrics": {
-        "accuracy": "NEEDS INPUT",
-        "ticketsProcessed": "NEEDS INPUT"
+        "accuracy": "Omitted at owner request",
+        "ticketsProcessed": "Omitted at owner request"
       },
       "status": "active",
       "category": "ai-ml"
@@ -64,8 +64,8 @@
       "url": "https://github.com/jyothir-369/point-cloud-processing-open3d",
       "stars": 3,
       "metrics": {
-        "processingSpeed": "NEEDS INPUT",
-        "accuracy": "NEEDS INPUT"
+        "processingSpeed": "Omitted at owner request",
+        "accuracy": "Omitted at owner request"
       },
       "status": "active",
       "category": "computer-vision"
@@ -87,8 +87,8 @@
       "url": "https://github.com/jyothir-369/hoi-recognition-pipeline",
       "stars": 2,
       "metrics": {
-        "fps": "NEEDS INPUT",
-        "accuracy": "NEEDS INPUT"
+        "fps": "Omitted at owner request",
+        "accuracy": "Omitted at owner request"
       },
       "status": "active",
       "category": "computer-vision"
@@ -111,8 +111,8 @@
       "stars": 0,
       "impact": "Built for visually impaired users in India",
       "metrics": {
-        "accuracy": "NEEDS INPUT",
-        "documentsProcessed": "NEEDS INPUT"
+        "accuracy": "Omitted at owner request",
+        "documentsProcessed": "Omitted at owner request"
       },
       "status": "active",
       "category": "nlp",
@@ -135,8 +135,8 @@
       "url": "https://github.com/jyothir-369/geospatial-deep-learning-segmentation",
       "stars": 0,
       "metrics": {
-        "iou": "NEEDS INPUT",
-        "imagesProcessed": "NEEDS INPUT"
+        "iou": "Omitted at owner request",
+        "imagesProcessed": "Omitted at owner request"
       },
       "status": "active",
       "category": "computer-vision"
@@ -159,8 +159,8 @@
       "url": "https://github.com/jyothir-369/smart-traffic-ai-system",
       "stars": 0,
       "metrics": {
-        "detectionAccuracy": "NEEDS INPUT",
-        "processingSpeed": "NEEDS INPUT"
+        "detectionAccuracy": "Omitted at owner request",
+        "processingSpeed": "Omitted at owner request"
       },
       "status": "active",
       "category": "computer-vision",
@@ -184,8 +184,8 @@
       "url": "https://github.com/jyothir-369/production-grade-rag-engine",
       "stars": 0,
       "metrics": {
-        "queryLatency": "NEEDS INPUT",
-        "documentsIndexed": "NEEDS INPUT"
+        "queryLatency": "Omitted at owner request",
+        "documentsIndexed": "Omitted at owner request"
       },
       "status": "active",
       "category": "ai-ml"
@@ -238,7 +238,7 @@
     },
     {
       "id": "multi-tenant-saas",
-      "name": "Multi-Tenant SaaS Invoicing",
+      "name": "Ledgerly",
       "description": "Production-ready multi-tenant SaaS platform for invoicing, billing, customer management, subscriptions, and payments",
       "domain": "SaaS / Backend",
       "tech": ["TypeScript", "Node.js", "PostgreSQL"],
@@ -258,8 +258,8 @@
   "metadata": {
     "totalProjects": 42,
     "featuredCount": 8,
-    "lastUpdated": "2026-11-08",
+    "lastUpdated": "2026-11-16",
     "verified": true,
-    "sources": ["GitHub repositories analysis"]
+    "sources": ["GitHub repositories analysis", "Owner-confirmed project names (2026-11-16): Ledgerly, Marketplace Order Fulfillment"]
   }
 }

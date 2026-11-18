@@ -12,7 +12,10 @@ const elements = {
   oc: document.getElementById('oc') as HTMLButtonElement,
   ov: document.getElementById('ov') as HTMLButtonElement,
   os: document.getElementById('os') as HTMLButtonElement,
-  oh: document.getElementById('oh') as HTMLButtonElement
+  oh: document.getElementById('oh') as HTMLButtonElement,
+  skipVoice: document.getElementById('skip-voice') as HTMLButtonElement,
+  about: document.getElementById('about-toggle') as HTMLButtonElement,
+  ot: document.getElementById('ot') as HTMLButtonElement
 }
 
 /**
@@ -125,6 +128,49 @@ export function updateSpeedButton(rate: number): void {
 export function toggleHandsFree(enabled: boolean): void {
   elements.oh.setAttribute('aria-pressed', String(enabled))
   elements.oh.textContent = enabled ? 'Hands-free on' : 'Hands-free off'
+}
+
+/**
+ * Show a small, quiet note in the status line (microcopy for system state)
+ */
+export function setStatusNote(note: string): void {
+  if (elements.stx) {
+    elements.stx.textContent = note
+  }
+}
+
+/**
+ * Apply a theme to the document root and keep the toggle button label honest.
+ * 'light' | 'dark' | null - null follows the operating system preference.
+ */
+export function applyTheme(theme: 'light' | 'dark' | null): void {
+  if (theme === null) {
+    document.documentElement.removeAttribute('data-theme')
+  } else {
+    document.documentElement.setAttribute('data-theme', theme)
+  }
+  if (elements.ot) {
+    elements.ot.textContent = theme === 'light' ? 'Dark theme' : 'Light theme'
+    elements.ot.setAttribute('aria-pressed', String(theme !== null))
+  }
+}
+
+/**
+ * Read the currently applied theme (null = follow system)
+ */
+export function currentTheme(): 'light' | 'dark' | null {
+  const value = document.documentElement.getAttribute('data-theme')
+  return value === 'light' || value === 'dark' ? value : null
+}
+
+/**
+ * Clear the typed-question row's state after a send
+ */
+export function clearTypedInput(): void {
+  const input = document.getElementById('typed-input') as HTMLInputElement | null
+  if (input) {
+    input.value = ''
+  }
 }
 
 /**

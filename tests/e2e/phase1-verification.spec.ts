@@ -36,9 +36,13 @@ test.describe('Phase 1: Foundation Verification', () => {
       const beginButton = page.getByRole('button', { name: /tap to begin/i })
       await expect(beginButton).toBeVisible()
 
-      // Check trending content row - use .first() to handle multiple matches
-      const trendingText = page.locator('text=/trending/i').first()
-      await expect(trendingText).toBeVisible()
+      // Check the "ask me about" topic row (Phase 7: verified FAQ topics, no unverified trends)
+      const topicRow = page.locator('text=/ask me about/i').first()
+      await expect(topicRow).toBeVisible()
+
+      // Phase 7: a visible text-input route for visitors who prefer not to talk
+      const skipVoice = page.getByRole('button', { name: /skip voice, use text/i })
+      await expect(skipVoice).toBeVisible()
     })
 
     test('should show main UI after dismissing intro', async ({ page }) => {
@@ -508,8 +512,10 @@ test.describe('Phase 1: Foundation Verification', () => {
     test('should preserve v12 visual structure', async ({ page }) => {
       await page.goto('/')
 
-      // Check key v12 elements exist
-      const v12Selectors = ['h1', 'canvas#gl', 'button']
+      // Check key v12 elements exist. The primary CTA is the intro's
+      // "Tap to begin" button (class .begin, as in the prototype); a generic
+      // 'button' selector now matches the hidden contact-copy button first.
+      const v12Selectors = ['h1', 'canvas#gl', 'button.begin']
 
       for (const selector of v12Selectors) {
         const element = page.locator(selector).first()

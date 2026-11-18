@@ -88,7 +88,9 @@ export const STATE_VISUALS: Record<
 }
 
 const BG = { light: 0.93, dark: 0.04 }
-const BASE = { light: 0.62, dark: 0.28 }
+// Idle floor colour: far enough from BG in both themes that the resting
+// wave stays readable (light dots were nearly invisible on the cream bg).
+const BASE = { light: 0.3, dark: 0.28 }
 
 export interface TerrainConfigSnapshot {
   cols: number

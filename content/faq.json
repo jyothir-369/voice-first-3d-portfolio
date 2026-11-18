@@ -166,8 +166,8 @@
         "track record"
       ],
       "answer": {
-        "spoken": "At flick Done, I processed over fifty thousand records, reduced manual verification by seventy percent, and improved pipeline speed by twenty-five percent. My point cloud project has three GitHub stars and I won first place at Hackathon twenty twenty-five.",
-        "caption": "At flickDone, I processed 50,000+ records, reduced manual verification by 70%, and improved pipeline speed by 25%. My point cloud project has 3 GitHub stars and I won 1st place at Hackathon 2025.",
+        "spoken": "At flickDone, I processed over fifty thousand records, reduced manual verification by seventy percent, and improved pipeline speed by twenty-five percent. My point cloud processing project has three GitHub stars.",
+        "caption": "At flickDone, I processed 50,000+ records, reduced manual verification by 70%, and improved pipeline speed by 25%. My point cloud processing project has 3 GitHub stars.",
         "objects": [
           "bars",
           "tests",
@@ -200,8 +200,8 @@
         "your journey"
       ],
       "answer": {
-        "spoken": "I am an AI systems founder from Ludhiana, India. I build production-grade AI: RAG pipelines, computer vision, and accessibility tools. I interned at flickDone and Know AI, and I focus on work that is auditable and socially useful.",
-        "caption": "AI systems founder from Ludhiana, India. Builds production-grade RAG, computer vision and accessibility tools. Interned at flickDone and Know AI.",
+        "spoken": "I am Jyothir Raghavalu Bhogi, an AI engineer in Hyderabad, India. I build production-grade AI: RAG pipelines, computer vision, and accessibility tools. I interned at flickDone and Know AI, and I focus on work that is auditable and socially useful.",
+        "caption": "Jyothir Raghavalu Bhogi, AI engineer in Hyderabad, India. Builds production-grade RAG, computer vision and accessibility tools. Interned at flickDone and Know AI.",
         "objects": [
           "person",
           "mail"
@@ -296,8 +296,8 @@
         "hot topics"
       ],
       "answer": {
-        "spoken": "The big shifts are agentic systems that take action, RAG for grounded answers, AI for social good like accessibility tools, and serious testing before production. I work with all four.",
-        "caption": "The big shifts are agentic systems that take action, RAG for grounded answers, AI for social good like accessibility tools, and serious testing before production. I work with all four.",
+        "spoken": "The shifts I work on are agentic systems that take action, RAG for grounded answers, AI for social good like accessibility tools, and serious testing before production. Those four are where my projects sit.",
+        "caption": "The shifts I work on are agentic systems that take action, RAG for grounded answers, AI for social good like accessibility tools, and serious testing before production. Those four are where my projects sit.",
         "objects": [
           "agents",
           "model",
@@ -450,8 +450,8 @@
         "production rag"
       ],
       "answer": {
-        "spoken": "I've built three production RAG engines. The regulatory one handles RBI and SEBI documents with full citation tracing. The clinical one ensures medical answers can be audited back to source. Both use hybrid search for precision.",
-        "caption": "I've built three production RAG engines. The regulatory one handles RBI and SEBI documents with full citation tracing. The clinical one ensures medical answers can be audited back to source. Both use hybrid search for precision.",
+        "spoken": "I've built production RAG engines. The regulatory one handles RBI and SEBI documents with full citation tracing. The production grade one ingests PDFs and answers questions with grounding. Both use hybrid search for precision.",
+        "caption": "I've built production RAG engines. The regulatory one handles RBI and SEBI documents with full citation tracing. The production grade one ingests PDFs and answers questions with grounding. Both use hybrid search for precision.",
         "objects": [
           "model",
           "tests",
@@ -502,7 +502,7 @@
         "namaste"
       ],
       "responses": [
-        "Hello! I'm Jyothir's AI assistant. Ask me about his AI projects, technical skills, or how to work with him.",
+        "Hello! I'm Jyothir's AI assistant. Ask me about my AI projects, technical skills, or how to work with me.",
         "Hi there! I can tell you about my work in AI, data engineering, and production systems. What interests you?",
         "Namaste! Ready to explore my portfolio. What would you like to know?"
       ]
@@ -591,33 +591,32 @@
       {
         "topic": "RAG Systems",
         "relevant": true,
-        "yourWork": "Regulatory RAG, production RAG engine, clinical RAG assistant — three production systems"
+        "yourWork": "Regulatory RAG assistant, production-grade RAG engine"
       },
       {
         "topic": "AI for Social Good",
         "relevant": true,
-        "yourWork": "Braille pipeline for visually impaired, smart traffic AI, accessibility focus"
+        "yourWork": "Braille pipeline for visually impaired users, accessibility focus"
       },
       {
         "topic": "AI Testing & Quality",
         "relevant": true,
-        "yourWork": "Production-grade systems with automated testing, TDD approach"
+        "yourWork": "Production-grade systems built with automated testing and TDD"
       },
       {
         "topic": "Computer Vision",
         "relevant": true,
-        "yourWork": "Point cloud processing, hand-object interaction, geospatial segmentation, smart traffic"
+        "yourWork": "Point cloud processing, hand-object interaction, geospatial segmentation"
       }
     ]
   },
   "metadata": {
-    "lastUpdated": "2026-11-08T13:20:10.901Z",
-    "status": "PARTIAL - 15 questions complete, personal story still needed",
+    "lastUpdated": "2026-11-16T00:00:00.000Z",
+    "status": "COMPLETE - 15 verified questions, unverified content omitted at owner request",
     "totalQuestions": 15,
     "voicePersona": "confirmed - first person",
     "nextSteps": [
-      "Add personal story for q6",
-      "Generate 15-35 more questions if needed"
+      "Reorder chips after launch analytics (Phase 12)"
     ]
   }
 }

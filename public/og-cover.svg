@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#09090a"/>
+  <g fill="#f4f3ef">
+    <circle cx="120" cy="470" r="4" opacity="0.9"/>
+    <circle cx="200" cy="452" r="4" opacity="0.8"/>
+    <circle cx="280" cy="430" r="4" opacity="0.7"/>
+    <circle cx="360" cy="404" r="4" opacity="0.6"/>
+    <circle cx="440" cy="374" r="4" opacity="0.5"/>
+    <circle cx="520" cy="340" r="4" opacity="0.4"/>
+    <circle cx="600" cy="302" r="4" opacity="0.35"/>
+    <circle cx="680" cy="340" r="4" opacity="0.4"/>
+    <circle cx="760" cy="374" r="4" opacity="0.5"/>
+    <circle cx="840" cy="404" r="4" opacity="0.6"/>
+    <circle cx="920" cy="430" r="4" opacity="0.7"/>
+    <circle cx="1000" cy="452" r="4" opacity="0.8"/>
+    <circle cx="1080" cy="470" r="4" opacity="0.9"/>
+  </g>
+  <circle cx="600" cy="300" r="46" fill="#ff3b1f"/>
+  <text x="80" y="150" font-family="monospace" font-size="72" font-weight="700" fill="#f4f3ef">TALK TO</text>
+  <text x="80" y="232" font-family="monospace" font-size="72" font-weight="700" fill="#f4f3ef">MY <tspan fill="#ff3b1f">WORK.</tspan></text>
+  <text x="80" y="560" font-family="monospace" font-size="30" fill="#8d8c88">A voice-first portfolio of Jyothir Raghavalu Bhogi — ask out loud, get answers in his own voice.</text>
+</svg>

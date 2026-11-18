@@ -1,8 +1,8 @@
 # Implementation Progress Tracker
 
 **Project**: v12 Voice Portfolio - "Talk to My Work"  
-**Last Updated**: 2026-11-15T03:00:00.000Z  
-**Current Phase**: Phase 5 COMPLETE → Ready for Phase 6
+**Last Updated**: 2026-11-16 (Phase 7 verification run)  
+**Current Phase**: Phase 7 COMPLETE → Ready for Phase 8 (work left uncommitted on `main` per owner instruction)
 
 ---
 
@@ -654,9 +654,67 @@ All acceptance criteria verified. The rules engine is fast, predictable, offline
 
 ---
 
-## Phases 6-12: Not Started
+## Phase 6: AI Backend (code committed; completion report not written)
 
-All remaining phases are pending. Will be tracked here as work progresses.
+**Status**: 🟡 CODE COMPLETE — not re-verified in this run  
+**Commits**: `1aea94c` conversation engine → `2cc7e42` API build config (5 commits on `main`)  
+**Note**: The Phase 5 section above predates these commits; the tracker entry was never written. Phase 6 code (streaming client, `/api/ask`, eval set, cost dashboard, fallback chain) is committed with its tests (`tests/unit/ai/client.test.ts`, `tests/unit/api/*.test.ts`). Writing its completion report and re-verifying its acceptance criteria is a separate task — not claimed here.
+
+---
+
+## Phase 7: Content, UI polish and branding (✅ COMPLETE)
+
+**Status**: ✅ COMPLETE (verified 2026-11-16)  
+**Objective**: Real copy, real identity, consistent design — site looks and feels finished  
+**Report**: `docs/PHASE_7_COMPLETION_REPORT.md` (full evidence)  
+**Visual baseline**: `docs/PHASE_7_BASELINE/` (8 screenshots: intro/main × light/dark × desktop/phone), reproducible via `node scripts/visual-baseline.mjs`
+
+### Implemented this phase
+- [x] Real content loaded from Phase 0 into `content/`; placeholders removed (validator + placeholder sweeps gate it)
+- [x] Start screen: final headline, promise line, "Best in Chrome or Edge. Sound on. Microphone optional.", visible "Skip voice, use text"
+- [x] Status/caption hierarchy (you said / site says), `aria-live` on both
+- [x] Chips generated from `content/faq.json` coreQuestions (15 verified questions) — cannot drift from the corpus
+- [x] Branding: title, description, theme colours (dark+light), favicon (inline SVG), OG/Twitter meta, 1200×630 social preview `public/og-cover.svg`
+- [x] Contact moment: hire/contact question reveals mailto link, "Open email app" link, copy-to-clipboard button
+- [x] Optional extras: About panel, email + social links
+- [x] Light/dark themes verified on desktop and phone (baselines + E2E + terrain unit tests)
+- [x] Microcopy reviewed: one voice across ready/listening/thinking/speaking/error states
+
+### Fixes applied (genuine failures; no test weakened)
+1. `src/main.ts` — skip-voice handler now dismisses the intro and enters idle (typed route was unreachable under the intro overlay)
+2. `src/scene/terrain.ts` — `BASE.light` 0.62→0.30; light-theme idle wave was nearly invisible on the cream background
+3. `tests/e2e/phase1-verification.spec.ts` — generic `button` selector matched the hidden contact-copy button; narrowed to `button.begin` (the prototype CTA)
+4. `tests/e2e/phase7-content-ui.spec.ts` — skip-voice test reloaded `/` before asserting (its `beforeEach` had already dismissed the intro)
+
+### Acceptance criteria verification (2026-11-16)
+- [x] **No placeholder or lorem text anywhere** — sweep of `index.html`, `src/**`, `content/*.json`, `api/prompt.ts` for NEEDS INPUT/TBD/TODO/lorem/FIXME/Aarav/hello@aarav.dev/Ludhiana/Plantly/Orbit/Autopilot/KhataKit/NotesNest/pre-seed: only hit is a validator guard string in `src/engine/knowledge-base.ts:109` (code, not content). Gated by `tests/unit/ui/phase7-content.test.ts` + E2E "no placeholder or persona strings".
+- [x] **Email address can be copied, tapped and opened by every route** — single source `content/profile.json` → `src/content.ts`; routes: About panel link (index.html:73), contact panel mailto + open + copy buttons, spoken/caption q8 answer, API prompt contact route. E2E asserts mailto href, copy feedback "Copied", and the About mailto link.
+- [x] **Both themes pass a visual review on desktop and phone** — baselines reviewed; light-theme terrain contrast defect found and fixed; dark unchanged; explicit toggle + follow-system both exercised.
+
+### Test results (this phase, final)
+| Gate | Command | Result |
+|---|---|---|
+| Content validation | `npm run validate-content` | PASSED — 15 FAQ entries valid |
+| Type check | `npm run type-check` | 0 errors |
+| Lint | `npm run lint` | 0 errors, 5 warnings (pre-existing `no-explicit-any`, within threshold) |
+| Unit tests | `npx vitest run` | 253/253 passed (14 files) |
+| E2E regression | `npx playwright test` | 97/97 passed (Chromium, ~2 min) |
+| Production build | `npm run build` | SUCCESS; og-cover.svg shipped in dist |
+
+### Known limitations (non-blocking)
+- `og:image` is SVG; some crawlers prefer raster — replace with PNG if previews mis-render
+- Calendar-booking link (task 6) absent: no scheduling URL in Phase 0 content; email is the verified route
+- Chip row scrolls horizontally on 390 px phones (readable, tappable — see phone baselines)
+- "Reorder chips after launch using analytics" deferred to post-launch routine (Phase 12)
+
+### Blockers
+None.
+
+---
+
+## Phases 8-12: Not Started
+
+Phase 8 (accessibility, privacy, legal) is next. Will be tracked here as work progresses.
 
 ---
 
@@ -704,3 +762,14 @@ All remaining phases are pending. Will be tracked here as work progresses.
 - Project instructions configured in CLAUDE.md
 - Phase-to-skill mapping documented
 - Ready to begin implementation once approach is confirmed
+
+## Phase 0 source-of-truth audit (2026-11-16)
+
+- Owner confirmed the portfolio subject is Jyothir Raghavalu Bhogi (real person, this repo's owner).
+- Full audit written to docs/PHASE_0_SOURCE_AUDIT.md: every claim classified VERIFIED / USER-CONFIRMED / NEEDS SOURCE / NEEDS INPUT.
+- Blocking findings for Phase 7 (from 2026-11-16 audit) — all resolved:
+  1. Stale demo persona "Aarav Sharma" / hello@aarav.dev — purged from index.html, src/main.ts, src/engine/knowledge.ts, src/stage/cues.ts, api/prompt.ts (verified by placeholder/persona sweep + E2E + unit gates).
+  2. Fabricated demo answers in src/engine/knowledge.ts — replaced with verified FAQ corpus content.
+  3. NEEDS INPUT markers in content files — removed; `npm run validate-content` passes.
+  4. Unsourced Ledgerly/IEEE claims — excluded from shipped content.
+- Phase 7 COMPLETE 2026-11-16: report at docs/PHASE_7_COMPLETION_REPORT.md, visual baseline at docs/PHASE_7_BASELINE/.

@@ -1,7 +1,7 @@
 # Phase 0: Content Discovery Status
 
 **Started**: 2026-11-08  
-**Status**: IN PROGRESS
+**Status**: RESOLVED 2026-11-16 - owner instructed omission of all unverified content; see Audit Resolution at the end of this file. Historical notes below are preserved as process record.
 
 ## Objective
 Collect authentic, verifiable information to replace ALL placeholder content in the v12 prototype. No invented facts, metrics, or biographical details.
@@ -188,3 +188,17 @@ For EACH product, need:
 - "No fake data or placeholders in completed features" - Quality Standard
 - Every number must be backed by a source - Acceptance Criteria
 - All answers must be read aloud and sound natural - Acceptance Criteria
+
+---
+
+## Audit Resolution (2026-11-16)
+
+The owner confirmed the portfolio subject is Jyothir Raghavalu Bhogi and instructed: omit all unverified information.
+
+- All NEEDS INPUT markers resolved by omission (safe default per no-fake-data standard).
+- Hackathon 2025 entry: removed entirely.
+- IEEE manuscript: excluded entirely (per standing exclusion rules).
+- Ledgerly "174 tests" claim: removed (no source).
+- Ledgerly identified as the multi-tenant-saas-invoicing-billing repository; added to projects.json.
+- Marketplace Order Fulfillment repository added to projects.json.
+- See docs/PHASE_0_SOURCE_AUDIT.md for the full source-of-truth classification.

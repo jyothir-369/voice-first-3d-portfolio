@@ -1,18 +1,6 @@
 {
   "achievements": [
     {
-      "id": "hackathon-2025-winner",
-      "title": "1st Place — Hackathon 2025",
-      "type": "competition",
-      "date": "2025",
-      "rank": 1,
-      "description": "Won first place at Hackathon 2025",
-      "details": "NEEDS INPUT - Event name, project details, team size, judges",
-      "impact": "NEEDS INPUT",
-      "verified": true,
-      "note": "Mentioned in GitHub bio, details need elaboration"
-    },
-    {
       "id": "braille-pipeline",
       "title": "Hindi–Bharati Braille NLP Pipeline",
       "type": "social-impact",
@@ -28,8 +16,8 @@
       "type": "experience",
       "date": "June 2026 - August 2026",
       "duration": "3 months",
-      "description": "NEEDS INPUT - responsibilities and achievements",
-      "achievements": ["NEEDS INPUT"],
+      "description": "AI Intern at Know AI. Responsibilities and achievements omitted at owner request.",
+      "achievements": [],
       "verified": true
     },
     {
@@ -62,11 +50,11 @@
     "projects": {
       "totalProjects": 42,
       "featuredProjects": 8,
-      "productionGrade": "NEEDS INPUT - how many in production?",
+      "productionGrade": "Omitted at owner request",
       "openSource": 42,
       "testCoverage": {
-        "note": "Ledgerly project mentioned with 174 tests across 21 suites",
-        "project": "NEEDS INPUT - cannot locate Ledgerly repository to verify"
+        "note": "Omitted at owner request - unverified",
+        "project": ""
       }
     },
     "flickdone": {
@@ -75,39 +63,32 @@
       "pipelineSpeedImprovement": "25%"
     },
     "technical": {
-      "linesOfCode": "NEEDS INPUT",
-      "commits": "NEEDS INPUT",
-      "pullRequests": "NEEDS INPUT",
-      "issuesClosed": "NEEDS INPUT"
+      "linesOfCode": "Omitted at owner request",
+      "commits": "Omitted at owner request",
+      "pullRequests": "Omitted at owner request",
+      "issuesClosed": "Omitted at owner request"
     },
     "impact": {
-      "usersServed": "NEEDS INPUT",
-      "systemsInProduction": "NEEDS INPUT",
-      "uptimePercentage": "NEEDS INPUT"
+      "usersServed": "Omitted at owner request",
+      "systemsInProduction": "Omitted at owner request",
+      "uptimePercentage": "Omitted at owner request"
     }
   },
   "recognition": {
-    "awards": [
-      {
-        "title": "Hackathon 2025 Winner",
-        "organization": "NEEDS INPUT",
-        "year": 2025,
-        "placement": "1st"
-      }
-    ],
+    "awards": [],
     "publications": "EXCLUDED - per user request, no research papers or manuscripts",
-    "certifications": "NEEDS INPUT - any certifications?",
-    "speaking": "NEEDS INPUT - any talks or presentations?"
+    "certifications": "Omitted at owner request",
+    "speaking": "Omitted at owner request"
   },
-  "testimonials": "NEEDS INPUT - client or colleague testimonials?",
+  "testimonials": "Omitted at owner request",
   "metadata": {
-    "lastUpdated": "2026-11-08T13:18:55.902Z",
+    "lastUpdated": "2026-11-16T00:00:00.000Z",
     "verified": "partial",
     "sources": [
       "GitHub profile",
       "Project analysis",
       "User-provided confirmation: flickDone metrics, education, dates"
     ],
-    "notes": "flickDone metrics verified. Ledgerly test metrics cannot be located in GitHub repos. Know AI internship details needed."
+    "notes": "flickDone metrics verified. Unverified metrics omitted at owner request (2026-11-16)."
   }
 }

@@ -9,6 +9,11 @@ import * as Stage from './stage/stage'
 import { findCue } from './stage/cues'
 import { respond } from './engine/conversation'
 import { askWithFallback } from './ai/client'
+import { initTyped, setTypedVisible } from './ui/typed'
+import { initContact, setContactVisible } from './ui/contact'
+import type { TypedEls } from './ui/typed'
+import type { ContactEls } from './ui/contact'
+import faqData from '../content/faq.json'
 
 let currentState: AppState = 'intro'
 let bumpEnergy = 0
@@ -16,6 +21,10 @@ let smoothedAmplitude = 0
 let handsFreeMode = false
 const cuesShown = new Set<string>()
 let objectsThisTurn = 0
+
+// Populated in init(): the typed-input row and the contact panel.
+let typedEls: TypedEls | null = null
+let contactEls: ContactEls | null = null
 
 /**
  * Set application state
@@ -93,6 +102,11 @@ async function processInput(text: string): Promise<void> {
     : respond(trimmed)
   cuesShown.clear()
   objectsThisTurn = 0
+
+  // Contact moment: after the "how do I hire you" answer, offer a tappable
+  // email route. Voice alone is never the only way to reach the owner.
+  const askedAboutHiring = /\b(hire|contact|email|reach|work together|collaborate|get in touch)\b/i.test(trimmed)
+  setContactVisible(contactEls, askedAboutHiring)
 
   const spokenDuration = response.s.length / (14 * Speaker.getRate()) * 1000
 
@@ -212,6 +226,10 @@ function init(): void {
     // Set up UI controls
     const elements = UI.getElements()
 
+    // Typed input and contact moment (Phase 7).
+    typedEls = initTyped(question => processInput(question))
+    contactEls = initContact()
+
     elements.begin.onclick = () => {
       UI.hideIntro()
       if (Speaker.isAvailable()) {
@@ -256,18 +274,54 @@ function init(): void {
       UI.toggleHandsFree(handsFreeMode)
     }
 
-    // Add question chips
-    const questions = [
-      'What has he built?',
-      'Is he technical?',
-      'What are his results?',
-      'Why not an agency?',
-      'How do I hire him?',
-      'Tell me about Aarav',
-      'What is trending in AI?'
-    ]
+    // "Skip voice, use text": a visible route for visitors who prefer not to
+    // talk. Dismissing the intro reveals the typed field, which sends through
+    // the same answer path as chips. Voice stays opt-in from here on.
+    elements.skipVoice.onclick = () => {
+      if (!typedEls) return
+      UI.hideIntro()
+      setState('idle')
+      UI.clearAIText()
+      setTypedVisible(typedEls, true)
+      elements.skipVoice.setAttribute('aria-pressed', 'true')
+    }
 
-    UI.addQuestionChips(questions, (question: string) => {
+    // Theme toggle: light / dark / follow-system, persisted per visitor.
+    try {
+      const saved = window.localStorage.getItem('vp-theme') as 'light' | 'dark' | null
+      if (saved === 'light' || saved === 'dark') {
+        UI.applyTheme(saved)
+      }
+    } catch {
+      /* private mode: theme follows the system */
+    }
+    elements.ot.onclick = () => {
+      const next = UI.currentTheme() === 'light' ? 'dark' : 'light'
+      UI.applyTheme(next)
+      try {
+        window.localStorage.setItem('vp-theme', next)
+      } catch {
+        /* private mode: theme applies for this visit only */
+      }
+    }
+
+    // About panel: <details> toggle is native; keep aria-expanded in sync
+    // for screen readers that announce it.
+    elements.about.addEventListener('click', () => {
+      const panel = document.getElementById('about')
+      if (panel) {
+        elements.about.setAttribute('aria-expanded', String(panel.hasAttribute('open')))
+      }
+    })
+
+    // Question chips come straight from the verified FAQ questions in
+    // content/faq.json so the UI can never drift from the answer corpus.
+    const questions = (faqData as { coreQuestions?: { question?: string }[] }).coreQuestions ?? []
+    const chipLabels = questions
+      .map(q => q.question)
+      .filter((text): text is string => typeof text === 'string' && text.length > 0)
+
+    UI.addQuestionChips(chipLabels, (question: string) => {
       stopSpeaking()
       processInput(question)
     })

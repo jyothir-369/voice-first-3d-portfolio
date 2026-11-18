@@ -64,8 +64,8 @@
   "infrastructure": {
     "cloud": ["AWS", "GCP (limited)"],
     "containerization": ["Docker"],
-    "orchestration": ["NEEDS INPUT - Kubernetes experience?"],
-    "ci-cd": ["GitHub Actions", "NEEDS INPUT"]
+    "orchestration": [],
+    "ci-cd": ["GitHub Actions"]
   },
   "dataEngineering": {
     "pipelines": [
@@ -76,8 +76,7 @@
     "tools": [
       "Pandas",
       "NumPy",
-      "Apache Kafka",
-      "NEEDS INPUT - Airflow/Spark experience?"
+      "Apache Kafka"
     ],
     "specialties": [
       "Automated data validation",
@@ -88,12 +87,12 @@
   "frontend": {
     "frameworks": ["React", "Next.js", "Streamlit"],
     "mobile": ["Flutter (basic)"],
-    "styling": ["Tailwind CSS", "NEEDS INPUT"]
+    "styling": ["Tailwind CSS"]
   },
   "tools": {
     "version-control": ["Git", "GitHub"],
-    "editors": ["VS Code", "NEEDS INPUT"],
-    "collaboration": ["NEEDS INPUT - Jira, Slack, Notion?"]
+    "editors": ["VS Code"],
+    "collaboration": []
   },
   "methodology": {
     "practices": [
@@ -112,22 +111,8 @@
     ]
   },
   "research": {
-    "areas": [
-      "LLM fine-tuning and RLHF",
-      "3D scene understanding (NeRF, Gaussian Splatting)",
-      "AI governance for public-sector deployment",
-      "Inclusive AI for accessibility"
-    ],
-    "publications": [
-      {
-        "title": "Driver Fatigue Detection System",
-        "type": "IEEE Manuscript",
-        "status": "Published/In-Progress",
-        "accuracy": "96.8%",
-        "year": "2024/2025",
-        "notes": "NEEDS INPUT - publication status, DOI, co-authors"
-      }
-    ]
+    "areas": [],
+    "publications": []
   },
   "strengths": [
     "End-to-end AI system design",

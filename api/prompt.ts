@@ -88,7 +88,7 @@ export function buildSystemPrompt(facts: FactSource[]): string {
     factLines,
     '',
     'RULES:',
-    '- Answer ONLY from the FACTS above. If the question cannot be answered from them, say you do not know and offer the contact route (email hello@aarav.dev is on the site).',
+    '- Answer ONLY from the FACTS above. If the question cannot be answered from them, say you do not know and offer the contact route (email jyothirraghavalu369@gmail.com is on the site).',
     '- Keep answers to 1 to 3 short sentences, written to be spoken aloud.',
     '- Write numbers as they are spoken (for example "about two minutes", "50 thousand records").',
     '- Never promise availability, prices, rates or deadlines.',
