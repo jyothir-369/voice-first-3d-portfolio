@@ -1,10 +1,6 @@
-import { EMAIL_ADDRESS } from '../content'
-
-
 /**
- * Contact moment: after the "how do I hire you" answer, show a prominent,
- * tappable email button with copy-to-clipboard. Voice alone is never the
- * only way to reach the owner (plan Phase 7, task 6).
+ * Phase 8 Contact Panel — mailto link, open-email-app button, copy-to-clipboard.
+ * Appears after hire/contact questions so voice is never the only route.
  */
 export interface ContactEls {
   panel: HTMLDivElement
@@ -26,30 +22,30 @@ export function initContact(): ContactEls | null {
 
   const link = document.createElement('a')
   link.className = 'contact-mail'
-  link.href = `mailto:${EMAIL_ADDRESS}`
-  link.textContent = EMAIL_ADDRESS
+  link.href = 'mailto:jyothirraghavalu369@gmail.com'
+  link.textContent = 'jyothirraghavalu369@gmail.com'
 
   const copy = document.createElement('button')
   copy.type = 'button'
   copy.className = 'contact-copy'
   copy.textContent = 'Copy email'
-  copy.setAttribute('aria-label', `Copy email address ${EMAIL_ADDRESS} to clipboard`)
+  copy.setAttribute('aria-label', `Copy email address jyothirraghavalu369@gmail.com to clipboard`)
   copy.addEventListener('click', async () => {
     const done = async (ok: boolean): Promise<void> => {
       copy.textContent = ok ? 'Copied' : 'Copy email'
-      copy.setAttribute('aria-label', ok ? 'Email address copied' : `Copy email address ${EMAIL_ADDRESS} to clipboard`)
+      copy.setAttribute('aria-label', ok ? 'Email address copied' : `Copy email address jyothirraghavalu369@gmail.com to clipboard`)
       window.setTimeout(() => {
         copy.textContent = 'Copy email'
-        copy.setAttribute('aria-label', `Copy email address ${EMAIL_ADDRESS} to clipboard`)
+        copy.setAttribute('aria-label', `Copy email address jyothirraghavalu369@gmail.com to clipboard`)
       }, 2000)
     }
     try {
-      await navigator.clipboard.writeText(EMAIL_ADDRESS)
+      await navigator.clipboard.writeText('jyothirraghavalu369@gmail.com')
       await done(true)
     } catch {
       try {
         const area = document.createElement('textarea')
-        area.value = EMAIL_ADDRESS
+        area.value = 'jyothirraghavalu369@gmail.com'
         document.body.appendChild(area)
         area.select()
         document.execCommand('copy')
@@ -63,7 +59,7 @@ export function initContact(): ContactEls | null {
 
   const open = document.createElement('a')
   open.className = 'contact-open'
-  open.href = `mailto:${EMAIL_ADDRESS}`
+  open.href = 'mailto:jyothirraghavalu369@gmail.com'
   open.textContent = 'Open email app'
 
   panel.append(label, link, copy, open)
