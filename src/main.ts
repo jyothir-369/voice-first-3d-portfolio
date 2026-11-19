@@ -11,6 +11,8 @@ import { respond } from './engine/conversation'
 import { askWithFallback } from './ai/client'
 import { initTyped, setTypedVisible } from './ui/typed'
 import { initContact, setContactVisible } from './ui/contact'
+import { initPrivacyNotice } from './ui/privacy'
+import { A11Y } from './ui/a11y'
 import type { TypedEls } from './ui/typed'
 import type { ContactEls } from './ui/contact'
 import faqData from '../content/faq.json'
@@ -229,6 +231,13 @@ function init(): void {
     // Typed input and contact moment (Phase 7).
     typedEls = initTyped(question => processInput(question))
     contactEls = initContact()
+
+    // Phase 8 privacy + accessibility
+    initPrivacyNotice()
+    A11Y.initKeyboardShortcuts()
+    A11Y.initScreenReaderRegions()
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+    A11Y.initReducedMotion(prefersReduced)
 
     elements.begin.onclick = () => {
       UI.hideIntro()
