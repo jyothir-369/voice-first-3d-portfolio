@@ -1,7 +1,8 @@
 /**
- * Typed-question input ("Skip voice, use text"). Adds a text field and a send
- * button for visitors who prefer not to talk. Voice stays the default for
- * everyone else; this is an additional route, not a replacement.
+ * Typed question input ("Skip voice, use text").
+ *
+ * Adds a text field and a send button for visitors who prefer not to talk.
+ * Voice stays the default for everyone else; this is an additional route.
  */
 export interface TypedEls {
   row: HTMLDivElement
