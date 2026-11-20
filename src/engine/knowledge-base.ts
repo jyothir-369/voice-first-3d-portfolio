@@ -98,6 +98,55 @@ const SYNONYM_MAP: Record<string, string> = {
   shifts: 'shift'
 }
 
+// Expanded paraphrase patterns for common question rephrasing
+const PARAPHRASE_PATTERNS: Array<{ canonical: string; variants: string[] }> = [
+  { canonical: 'what do you build', variants: ['what do you make', 'what do you create', 'what do you work on', 'what kind of work', 'what projects', 'what apps', 'what systems'] },
+  { canonical: 'what do you do', variants: ['what do you build', 'what do you make', 'what projects', 'what apps'] },
+  { canonical: 'are you technical', variants: ['are you a developer', 'can you code', 'do you code', 'your technical skills', 'coding skills'] },
+  { canonical: 'your experience', variants: ['tell me about your experience', 'what is your background', 'your career history', 'your work history'] },
+  { canonical: 'your results', variants: ['what results have you achieved', 'what impact have you made', 'your metrics', 'your achievements', 'your performance'] },
+  { canonical: 'tell me about yourself', variants: ['who are you', 'introduce yourself', 'your background', 'your story', 'tell me about you'] },
+  { canonical: 'your education', variants: ['what did you study', 'your degree', 'where did you study', 'your education', 'your university'] },
+  { canonical: 'how do i hire you', variants: ['how can i hire you', 'how do i contact you', 'how can i contact you', 'what email', 'your email address', 'email address', 'contact you'] },
+  { canonical: 'what makes you different', variants: ['what makes you unique', 'why you', 'why should i hire you', 'what sets you apart', 'what makes you special'] },
+  { canonical: 'what is your tech stack', variants: ['what technologies do you use', 'what tools do you use', 'your tech stack', 'technology stack'] },
+  { canonical: 'what is trending', variants: ['what ai trends', 'what is hot', 'latest in ai', 'current trends', 'whats new'] },
+  { canonical: 'tell me about flick done', variants: ['tell me about flickdone', 'flick done internship', 'your time at flick done', 'worked at flickdone'] },
+  { canonical: 'tell me about the braille pipeline', variants: ['braille pipeline', 'your accessibility work', 'accessibility project'] }
+]
+
+/**
+ * Expand a question using synonym and paraphrase maps for better semantic matching.
+ */
+export function expandQuestion(text: string): string {
+  const normalized = text.toLowerCase().trim()
+  const tokens = normalized.split(/[^a-z0-9+'-]/g).filter(w => w.length >= 2)
+
+  // Build expanded token set
+  const expandedTokens = new Set<string>()
+  for (const word of tokens) {
+    expandedTokens.add(word)
+    const syn = SYNONYM_MAP[word]
+    if (syn) expandedTokens.add(syn)
+  }
+
+  // Check for paraphrase matches
+  for (const pattern of PARAPHRASE_PATTERNS) {
+    for (const variant of pattern.variants) {
+      if (normalized.includes(variant)) {
+        // Add canonical form tokens
+        const canonicalTokens = pattern.canonical.split(/[^a-z0-9]+/g).filter(w => w.length >= 2)
+        for (const ct of canonicalTokens) {
+          expandedTokens.add(ct)
+        }
+        break
+      }
+    }
+  }
+
+  return Array.from(expandedTokens).join(' ')
+}
+
 export type { FaqEntry }
 
 let _entries: FaqEntry[] = []
@@ -192,7 +241,9 @@ export interface MatchResult {
  * Score FAQ entries against query using TF-IDF-like approach.
  */
 export function scoreEntries(text: string): MatchResult[] {
-  const queryTokens = tokenize(text)
+  // Expand the query using synonym/paraphrase maps for better matching
+  const expandedText = expandQuestion(text)
+  const queryTokens = tokenize(expandedText)
   const entries = loadEntries()
   const idf = buildIdf()
 

@@ -78,8 +78,21 @@ function checkRefusal(normalized: string): ResponseData | null {
 const YES_PATTERN = /^(yes|yeah|yep|yup|sure|okay|ok|please|go ahead|why not|absolutely|definitely|tell me more|what else|go on|continue|more details|elaborate|and then|what about that)\b/
 const NO_PATTERN = /^(no|nope|not now|skip|nah)\b/
 
+// Context-aware follow-ups must be deictic. Specific terms such as "RAG" must
+// remain available to retrieval instead of being swallowed as a continuation.
+const CONTEXTUAL_FOLLOWUP_PATTERN = /^(tell me more|elaborate|go on|continue|more details|what else|and then|what about that|how about that|and what about that|that|this|it)$/i
+const TOPIC_REFERENCE_PATTERN = /^(the same|that one|this one|the previous one)$/i
+
 function hasPendingFollowUp(memory: ConversationMemory): boolean {
   return typeof memory.pendingFollowUpFaqId === "string" && memory.pendingFollowUpFaqId.length > 0
+}
+
+/**
+ * Detect whether a follow-up phrase is referring to the previous topic
+ * (e.g., "tell me more", "what about the rag one", "and the braille").
+ */
+function isContextualFollowUp(normalized: string): boolean {
+  return CONTEXTUAL_FOLLOWUP_PATTERN.test(normalized) || TOPIC_REFERENCE_PATTERN.test(normalized)
 }
 
 export function routeIntent(text: string, memory: ConversationMemory): IntentResult {
@@ -108,6 +121,13 @@ export function routeIntent(text: string, memory: ConversationMemory): IntentRes
   }
   if (hasPendingFollowUp(memory) && NO_PATTERN.test(normalized)) {
     return { intent: "no", response: makeResponse("Alright, ask me anything else!"), confidence: 1 }
+  }
+
+  // 3b. CONTEXTUAL follow-ups: "tell me more", "what about that", etc. route to
+  //     the pending follow-up when one exists, so a visitor can drill deeper
+  //     without repeating the full question.
+  if (hasPendingFollowUp(memory) && isContextualFollowUp(normalized)) {
+    return { intent: "yes", response: makeResponse(""), confidence: 0.9 }
   }
 
   // 4. GREETINGS

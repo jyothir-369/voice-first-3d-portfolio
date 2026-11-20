@@ -7,7 +7,6 @@ import * as Meter from './voice/meter'
 import * as Terrain from './scene/terrain'
 import * as Stage from './stage/stage'
 import { findCue } from './stage/cues'
-import { respond } from './engine/conversation'
 import { askWithFallback } from './ai/client'
 import { initTyped, setTypedVisible } from './ui/typed'
 import { initContact, setContactVisible } from './ui/contact'
@@ -21,6 +20,9 @@ let currentState: AppState = 'intro'
 let bumpEnergy = 0
 let smoothedAmplitude = 0
 let handsFreeMode = false
+let lastVoiceInteraction = 0
+const conversationHistory: { role: 'user' | 'assistant'; content: string }[] = []
+const MAX_CONVERSATION_HISTORY = 6
 const cuesShown = new Set<string>()
 let objectsThisTurn = 0
 
@@ -67,6 +69,22 @@ function startListening(): void {
 
   stopSpeaking()
   Recognizer.start()
+  setState('listening')
+  UI.showUserInput('Listening…')
+  Meter.start()
+  UI.setAIText('I am listening. Speak now.')
+}
+
+/**
+ * Stop listening without producing a reply, and return to idle.
+ * This is the always-available "Stop" path for the mic (barge-in friendly).
+ */
+function stopListening(): void {
+  Recognizer.stop()
+  Meter.stop()
+  setState('idle')
+  UI.setAIText('Stopped. Tap the mic when you want to talk again.')
+  lastVoiceInteraction = Date.now()
 }
 
 /**
@@ -82,6 +100,13 @@ function stopSpeaking(): void {
 /**
  * Process user input and generate response
  */
+function addConversationTurn(role: 'user' | 'assistant', content: string): void {
+  conversationHistory.push({ role, content })
+  if (conversationHistory.length > MAX_CONVERSATION_HISTORY) {
+    conversationHistory.splice(0, conversationHistory.length - MAX_CONVERSATION_HISTORY)
+  }
+}
+
 async function processInput(text: string): Promise<void> {
   stopSpeaking()
 
@@ -89,10 +114,11 @@ async function processInput(text: string): Promise<void> {
   if (!trimmed) return
 
   UI.showUserInput(`You: "${trimmed}"`)
+  addConversationTurn('user', trimmed)
 
   // Check for stop command
-  if (/\b(stop|quiet|enough|cancel)\b/.test(trimmed.toLowerCase())) {
-    stopSpeaking()
+  if (/\b(stop|quiet|enough|cancel|nevermind|never mind)\b/.test(trimmed.toLowerCase())) {
+    stopListening()
     Stage.clearStage()
     setState('idle')
     UI.setAIText('Okay, stopping.')
@@ -103,10 +129,12 @@ async function processInput(text: string): Promise<void> {
 
   // Phase 6 fallback chain: AI answer, else local rules answer, else the
   // friendly "not sure" reply. askWithFallback never throws.
-  const ai = await askWithFallback(trimmed, { history: [] })
-  const response = ai.source === 'ai'
-    ? { s: ai.say, c: ai.caption }
-    : respond(trimmed)
+  const ai = await askWithFallback(trimmed, {
+    history: conversationHistory.slice(0, -1),
+    sessionId: 'portfolio-session'
+  })
+  const response = { s: ai.say, c: ai.caption }
+  addConversationTurn('assistant', response.s)
   cuesShown.clear()
   objectsThisTurn = 0
 
@@ -123,8 +151,17 @@ async function processInput(text: string): Promise<void> {
     if (Speaker.isAvailable()) {
       Speaker.speak(response.s, () => {
         UI.setAIText(response.c)
+        // Mark the end-of-speech moment so the hands-free resume can wait a
+        // beat (echo prevention: avoid the mic catching the speaker's tail).
+        lastVoiceInteraction = Date.now()
+        // Hands-free: after the reply finishes, re-open the mic on its own so
+        // the visitor can keep talking without pressing anything.
         if (handsFreeMode && currentState === 'idle') {
-          startListening()
+          setTimeout(() => {
+            if (handsFreeMode && currentState === 'idle' && Date.now() - lastVoiceInteraction >= 300) {
+              startListening()
+            }
+          }, 300)
         }
       })
     } else {
@@ -291,7 +328,7 @@ function init(): void {
 
     elements.mic.onclick = () => {
       if (currentState === 'listening') {
-        Recognizer.stop()
+        stopListening()
       } else {
         acknowledgeMicNotice()
         startListening()
@@ -322,6 +359,12 @@ function init(): void {
       handsFreeMode = !handsFreeMode
       Speaker.setHandsFree(handsFreeMode)
       UI.toggleHandsFree(handsFreeMode)
+      UI.setAIText(`Hands-free ${handsFreeMode ? 'enabled' : 'disabled'}`)
+      try {
+        window.localStorage.setItem('vp-hands-free', String(handsFreeMode))
+      } catch {
+        /* private mode: setting applies for this visit only */
+      }
     }
 
     // "Skip voice, use text": a visible route for visitors who prefer not to
