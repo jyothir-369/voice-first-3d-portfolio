@@ -146,6 +146,12 @@ interface TerrainRuntime {
   disposed: boolean
   onContextLost: (event: Event) => void
   onContextRestored: () => void
+  /** Frames measured since start/quality change (for adaptive stepping). */
+  perfFrameCount: number
+  /** Sum of frame times in ms for the current measurement window. */
+  perfFrameTimeSum: number
+  /** Whether a quality step-down has already been applied in this session. */
+  qualitySteppedDown: boolean
 }
 
 let runtime: TerrainRuntime | null = null
@@ -165,6 +171,7 @@ function readTheme(): boolean {
 /**
  * Adaptive density: phones and narrow viewports drop to 70%, and to 50%
  * when the CPU reports four or fewer cores. Desktop stays at full density.
+ * A runtime monitor can step quality down further (see `stepDownQuality`).
  */
 export function detectDeviceQuality(): number {
   if (!TERRAIN_CONFIG.adaptiveQuality) return 1
@@ -178,6 +185,22 @@ export function detectDeviceQuality(): number {
   if (cores <= 4) return 0.7
   return 1
 }
+
+/**
+ * Runtime performance budget (Phase 9).
+ * Below this frame rate the scene steps quality down instead of stuttering.
+ * Mid-range phones only need 30 fps, so the floor is 28 to leave a margin.
+ */
+export const PERFORMANCE_BUDGET = {
+  /** Sustained fps below this triggers one quality step-down. */
+  minFps: 28,
+  /** Frames measured before a decision is made (~2 s at 60 fps). */
+  warmupFrames: 120,
+  /** Never render fewer than this share of the device-detected density. */
+  minQuality: 0.35,
+  /** Quality steps applied in order when frames are slow. */
+  steps: [0.7, 0.5, 0.35]
+} as const
 
 function makeDotTexture(): THREE.CanvasTexture {
   const canvas2d = document.createElement('canvas')
@@ -336,7 +359,10 @@ export function initTerrain(canvas: HTMLCanvasElement): THREE.Scene {
     loopRunning: false,
     disposed: false,
     onContextLost: () => undefined,
-    onContextRestored: () => undefined
+    onContextRestored: () => undefined,
+    perfFrameCount: 0,
+    perfFrameTimeSum: 0,
+    qualitySteppedDown: false
   }
 
   rt.onContextLost = (event: Event) => {
@@ -497,6 +523,43 @@ export function render(): void {
   rt.renderer.render(rt.scene, rt.camera)
   rt.lastFrameMs = performance.now() - started
   if (rt.debugMode) paintDebug(rt)
+
+  // Runtime performance monitoring (Phase 9): track fps and step quality
+  // down if frame times are sustained above budget.
+  rt.perfFrameCount += 1
+  rt.perfFrameTimeSum += rt.lastFrameMs
+  if (rt.perfFrameCount >= PERFORMANCE_BUDGET.warmupFrames) {
+    const avgFrameMs = rt.perfFrameTimeSum / rt.perfFrameCount
+    const fps = avgFrameMs > 0 ? 1000 / avgFrameMs : 0
+    rt.perfFrameCount = 0
+    rt.perfFrameTimeSum = 0
+    if (fps < PERFORMANCE_BUDGET.minFps && !rt.qualitySteppedDown) {
+      // Step quality down through the pre-defined steps.
+      const next = PERFORMANCE_BUDGET.steps.find(q => q < rt.currentQuality - 0.01)
+      if (next !== undefined) {
+        rt.currentQuality = next
+        rt.effectiveCols = Math.max(8, Math.floor(COLS * next))
+        rt.effectiveRows = Math.max(6, Math.floor(ROWS * next))
+        // Update dot size with new quality.
+        ;(rt.material as THREE.PointsMaterial).size = TERRAIN_CONFIG.dotSize * (0.75 + 0.25 * next)
+        // Rebuild geometry for the new count.
+        const count = rt.effectiveCols * rt.effectiveRows
+        const positions = new Float32Array(count * 3)
+        const colors = new Float32Array(count * 3)
+        // Reuse existing arrays via setAttribute is complex; just create new.
+        // Simpler: dispose and recreate the points.
+        rt.geometry.dispose()
+        const g = new THREE.BufferGeometry()
+        g.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+        g.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+        g.computeBoundingSphere()
+        rt.geometry = g
+        rt.points.geometry.dispose()
+        rt.points.geometry = g
+        rt.qualitySteppedDown = true
+      }
+    }
+  }
 }
 
 /**

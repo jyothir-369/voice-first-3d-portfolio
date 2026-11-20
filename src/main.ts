@@ -28,6 +28,11 @@ let objectsThisTurn = 0
 let typedEls: TypedEls | null = null
 let contactEls: ContactEls | null = null
 
+// 3D terrain is lazily initialized after the intro screen is dismissed so the
+// first paint stays fast (Phase 9 performance budget: defer heavy WebGL init).
+let terrainStarted = false
+let stopLoop: (() => void) | null = null
+
 /**
  * Set application state
  */
@@ -170,9 +175,11 @@ function sampleFrame(): { amplitude: number; state: AppState } {
 }
 
 /**
- * Initialize the application
+ * Initialize the heavy 3D scene (Three.js terrain + stage). Called lazily,
+ * after the intro screen is dismissed, to keep initial page weight low and
+ * first paint fast (Phase 9 performance budget).
  */
-function init(): void {
+function init3DScene(): void {
   const canvas = document.getElementById('gl') as HTMLCanvasElement
 
   try {
@@ -180,7 +187,34 @@ function init(): void {
     Terrain.initTerrain(canvas)
     Stage.initStage(Terrain.getScene())
 
-    // Initialize voice
+    const stopLoopFn = Terrain.startTerrainLoop(sampleFrame)
+    stopLoop = () => {
+      stopLoopFn()
+      stopLoop = null
+    }
+
+    // Cleanup on page hide
+    window.addEventListener('pagehide', () => {
+      stopSpeaking()
+      Meter.stop()
+      stopLoop?.()
+      Terrain.disposeTerrain()
+      terrainStarted = false
+    })
+  } catch (error) {
+    console.error('Failed to initialize 3D scene:', error)
+    canvas.style.display = 'none'
+  }
+}
+
+/**
+ * Initialize the application (UI only; 3D scene lazy-loads after intro).
+ */
+function init(): void {
+  const canvas = document.getElementById('gl') as HTMLCanvasElement
+
+  try {
+    // Initialize UI voice controls first (no 3D yet - keeps FCP fast)
     Speaker.initSpeaker()
     Speaker.setCallbacks({
       onStart: () => setState('speaking'),
@@ -225,7 +259,7 @@ function init(): void {
       }
     })
 
-    // Set up UI controls
+    // Set up UI controls (but DON'T init 3D terrain yet - deferred to after intro)
     const elements = UI.getElements()
 
     // Typed input and contact moment (Phase 7).
@@ -247,6 +281,11 @@ function init(): void {
       }
       setState('idle')
       UI.clearAIText()
+      // Lazy-init 3D scene after intro is dismissed
+      if (!terrainStarted) {
+        init3DScene()
+        terrainStarted = true
+      }
       processInput('hello')
     }
 
@@ -342,19 +381,8 @@ function init(): void {
       elements.ov.hidden = true
       elements.os.hidden = true
     }
-
-    const stopLoop = Terrain.startTerrainLoop(sampleFrame)
-
-    // Cleanup on page hide
-    window.addEventListener('pagehide', () => {
-      stopSpeaking()
-      Meter.stop()
-      stopLoop()
-      Terrain.disposeTerrain()
-    })
-
   } catch (error) {
-    console.error('Failed to initialize 3D scene:', error)
+    console.error('Failed to initialize app:', error)
     canvas.style.display = 'none'
   }
 }
