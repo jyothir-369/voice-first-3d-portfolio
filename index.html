@@ -22,7 +22,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body data-s="idle">
+  <a class="skip-link" href="#main-content">Skip to questions</a>
   <canvas id="gl" aria-hidden="true"></canvas>
+  <p class="sr-only" id="scene-desc">A 3D dot-wave terrain reacts to the site's state: it ripples while listening, pulses while speaking, and stays calm when idle. Decorative only; all information is also available as text.</p>
 
   <div class="top">
     <b class="dot">JYOTHIR RAGHAVALU BHOGI</b>
@@ -32,10 +34,13 @@
     </div>
   </div>
 
-  <div class="cap" id="cap">
-    <div class="you" id="you" aria-live="polite"></div>
-    <div class="ai" id="ai" aria-live="polite"></div>
-  </div>
+  <main id="main-content">
+    <section aria-label="Conversation captions">
+      <div class="cap" id="cap">
+        <div class="you" id="you" aria-live="polite"></div>
+        <div class="ai" id="ai" aria-live="polite"></div>
+      </div>
+    </section>
 
   <div class="deck">
     <div class="chips" id="chips" role="group" aria-label="Questions you can tap instead of speaking"></div>
@@ -79,6 +84,7 @@
     </details>
     <small>Best in Chrome or Edge. Sound on. Microphone optional.</small>
   </div>
+  </main>
 
   <script type="module" src="/src/main.ts"></script>
 </body>
