@@ -14,7 +14,8 @@
   :root:not([data-theme='dark']) {
     --bg: #ecebe6;
     --ink: #0b0b0c;
-    --mute: #6d6c68;
+    --mute: #676663;
+    --red: #b8240f;
     --line: rgba(11, 11, 12, 0.25);
     color-scheme: light;
   }
@@ -23,7 +24,8 @@
 :root[data-theme='light'] {
   --bg: #ecebe6;
   --ink: #0b0b0c;
-  --mute: #6d6c68;
+  --mute: #676663;
+  --red: #b8240f;
   --line: rgba(11, 11, 12, 0.25);
   color-scheme: light;
 }
@@ -307,7 +309,7 @@ body[data-s='speaking'] .mic {
   font: inherit;
   font-weight: 500;
   font-size: 18px;
-  color: var(--bg);
+  color: #fff;
   background: var(--ink);
   border: 0;
   border-radius: 99px;
@@ -317,6 +319,18 @@ body[data-s='speaking'] .mic {
   align-items: center;
   gap: 12px;
   transition: transform 0.15s, background 0.2s;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) .begin {
+    color: var(--bg);
+    background: var(--ink);
+  }
+}
+
+:root[data-theme='light'] .begin {
+  color: var(--bg);
+  background: var(--ink);
 }
 
 .begin:hover {

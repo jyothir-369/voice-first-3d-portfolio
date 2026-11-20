@@ -11,7 +11,7 @@ import { respond } from './engine/conversation'
 import { askWithFallback } from './ai/client'
 import { initTyped, setTypedVisible } from './ui/typed'
 import { initContact, setContactVisible } from './ui/contact'
-import { initPrivacyNotice } from './ui/privacy'
+import { initPrivacyNotice, acknowledgeMicNotice } from './ui/privacy'
 import { A11Y } from './ui/a11y'
 import type { TypedEls } from './ui/typed'
 import type { ContactEls } from './ui/contact'
@@ -240,6 +240,7 @@ function init(): void {
     A11Y.initReducedMotion(prefersReduced)
 
     elements.begin.onclick = () => {
+      acknowledgeMicNotice()
       UI.hideIntro()
       if (Speaker.isAvailable()) {
         Speaker.loadVoices()
@@ -253,6 +254,7 @@ function init(): void {
       if (currentState === 'listening') {
         Recognizer.stop()
       } else {
+        acknowledgeMicNotice()
         startListening()
       }
     }
