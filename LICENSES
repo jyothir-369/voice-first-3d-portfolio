@@ -1,0 +1,36 @@
+# Licences
+
+This portfolio uses the following open-source assets. Full licence text is
+available at the project repository root (MIT for the site code itself).
+
+## Runtime libraries
+
+| Asset | Version | Licence | Notes |
+|---|---|---|---|
+| three.js | 0.169.0 | MIT | 3D scene, terrain, object stage |
+| @anthropic-ai/sdk | ^1.8.0 | MIT | Server-side AI client only; never shipped to the browser |
+| Vite | 5.4.8 | MIT | Build tool |
+| TypeScript | 5.6.3 | Apache-2.0 | Type checking |
+| Vitest | 2.1.2 | MIT | Unit tests |
+| Playwright | 1.48.0 | Apache-2.0 | E2E tests |
+| ESLint / Prettier | 9.12.0 / 3.3.3 | MIT / MIT | Lint + format |
+
+## Fonts
+
+| Font | Foundry | Licence | Notes |
+|---|---|---|---|
+| Doto (weights 400, 700, 900) | Indian Type Foundry | OFL-1.1 | Headline dot-matrix face, loaded from Google Fonts |
+| DM Mono (weights 400, 500) | Colophon Foundry | OFL-1.1 | Body/UI face, loaded from Google Fonts |
+
+Both fonts are served under the SIL Open Font License 1.1; the site links to
+Google Fonts and the fonts fall back to system monospace if the CDN is blocked.
+
+## Site code
+
+The site's own code in `src/`, `api/`, `scripts/` and `tests/` is licensed MIT
+(see the root `LICENSE` file, or contact the owner for a copy).
+
+## Content
+
+Portfolio copy, spoken answers and visual baselines are the owner's own work.
+No third-party images, logos or copyrighted text are used.
