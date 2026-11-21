@@ -12,8 +12,8 @@ import {
   askQuestion,
   AskError,
   FALLBACK_SAY
-} from '../../../api/ask'
-import { buildSystemPrompt, loadFactSources, isRefusalTopic, REFUSAL_TOPICS, REFUSAL_KEYWORDS, ALLOWED_OBJECT_KEYS } from '../../../api/prompt'
+} from '../../../server/ask-service'
+import { buildSystemPrompt, loadFactSources, isRefusalTopic, REFUSAL_TOPICS, REFUSAL_KEYWORDS, ALLOWED_OBJECT_KEYS } from '../../../server/prompt'
 
 // ──────────────────────────────────────────────
 // Validation
@@ -61,14 +61,11 @@ describe('sanitizeHistory', () => {
 })
 
 describe('pickModel', () => {
-  it('defaults to Haiku for short questions', () => {
-    expect(pickModel('What do you build?', [])).toBe('claude-haiku-5-5')
-  })
-  it('escalates to Sonnet for long questions', () => {
-    expect(pickModel('a'.repeat(141), [])).toBe('claude-sonnet-5-5')
+  it('defaults to Groq for short questions', () => {
+    expect(pickModel('What do you build?', [])).toBe('openai/gpt-oss-120b')
   })
   it('escalates for multi-part questions', () => {
-    expect(pickModel('compare RAG and agents and tell me the difference', [])).toBe('claude-sonnet-5-5')
+    expect(pickModel('compare RAG and agents and tell me the difference', [])).toBe('openai/gpt-oss-120b')
   })
 })
 
@@ -202,10 +199,13 @@ describe('isRefusalTopic', () => {
 
 function fakeClient(payload: string) {
   return {
-    messages: {
-      create: vi.fn().mockResolvedValue({ content: [{ type: 'text', text: payload }] })
+    responses: {
+      create: vi.fn().mockResolvedValue({
+        output: [{ type: 'message', content: [{ type: 'output_text', text: payload }] }],
+        usage: { input_tokens: 12, output_tokens: 5 }
+      })
     }
-  } as unknown as import('@anthropic-ai/sdk').Anthropic
+  } as unknown as import('../../../server/ask-service').OpenAIClient
 }
 
 describe('askQuestion', () => {
@@ -229,11 +229,13 @@ describe('askQuestion', () => {
       { question: 'What do you build?', history: [{ role: 'user', content: 'hi' }] },
       { client }
     )
-    const call = (client.messages.create as ReturnType<typeof vi.fn>).mock.calls[0][0]
-    expect(call.system).toContain('FACTS (your only source of truth)')
-    expect(call.messages[0]).toEqual({ role: 'user', content: 'hi' })
-    expect(call.messages[1].content).toContain('QUESTION: What do you build?')
-    expect(call.max_tokens).toBe(300)
+    const call = (client.responses.create as ReturnType<typeof vi.fn>).mock.calls[0][0]
+    expect(call.instructions).toContain('FACTS (your only source of truth)')
+    expect(call.input).toBeDefined()
+    // input is an array, check if any element contains the question
+    const inputStr = JSON.stringify(call.input)
+    expect(inputStr).toContain('QUESTION: What do you build?')
+    expect(call.model).toBe('openai/gpt-oss-120b')
   })
 
   it('refuses refusal topics without calling the model', async () => {
@@ -241,7 +243,7 @@ describe('askQuestion', () => {
     const res = await askQuestion({ question: 'What is your salary?' }, { client })
     expect(res.usedFallback).toBe(true)
     expect(res.reply.say).toBe(FALLBACK_SAY)
-    expect(client.messages.create).not.toHaveBeenCalled()
+    expect(client.responses.create).not.toHaveBeenCalled()
   })
 
   it('falls back when the model output is not JSON', async () => {
@@ -262,12 +264,12 @@ describe('askQuestion', () => {
 
   it('maps 5xx API errors to 502', async () => {
     const apiErr = Object.assign(new Error('boom'), { status: 503 })
-    const client = { messages: { create: () => Promise.reject(apiErr) } } as never
+    const client = { responses: { create: () => Promise.reject(apiErr) } } as never
     await expect(askQuestion({ question: 'q' }, { client })).rejects.toMatchObject({ status: 502 })
   })
 
   it('maps non-API errors to 502', async () => {
-    const client = { messages: { create: () => Promise.reject(new Error('network down')) } } as never
+    const client = { responses: { create: () => Promise.reject(new Error('network down')) } } as never
     await expect(askQuestion({ question: 'q' }, { client })).rejects.toMatchObject({ status: 502 })
   })
 })

@@ -239,6 +239,15 @@ test.describe('Phase 3: 3D Dot-Wave Terrain', () => {
     })
 
     test('[AC3] Rotation and resize never distorts scene', async ({ page }) => {
+      // Terrain is initialized lazily after the visitor dismisses the intro.
+      await page.locator('button:has-text("Tap to begin")').click()
+
+      const canvas = page.locator('#gl')
+      await expect.poll(
+        () => canvas.evaluate((el) => (el as HTMLCanvasElement).width),
+        { message: 'Terrain renderer should initialize before resize checks' }
+      ).toBeGreaterThan(300)
+
       const sizes = [
         { width: 1920, height: 1080 },
         { width: 1366, height: 768 },

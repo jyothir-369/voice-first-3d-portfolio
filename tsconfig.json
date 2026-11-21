@@ -29,6 +29,6 @@
       "@content/*": ["content/*"]
     }
   },
-  "include": ["src", "api"],
+  "include": ["src", "api", "server"],
   "exclude": ["tests/e2e/**/*"]
 }

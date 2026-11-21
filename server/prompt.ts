@@ -5,12 +5,13 @@
 // same facts the Phase 5 rules layer uses. No fact is invented here.
 import faqData from '../content/faq.json' with { type: 'json' }
 
-export const MODEL_DEFAULT = 'claude-haiku-5-5'
-export const MODEL_COMPLEX = 'claude-sonnet-5-5'
+export const MODEL_DEFAULT = 'openai/gpt-oss-120b'
+export const MODEL_COMPLEX = 'openai/gpt-oss-120b'
 export const MAX_INPUT_CHARS = 300
 export const MAX_TOKENS = 300
 export const HISTORY_TURNS = 6
 export const COMPLEX_QUESTION_CHARS = 140
+export const GROQ_BASE_URL = 'https://api.groq.com/openai/v1'
 
 // Object catalogue keys — mirrors scripts/validate-content.mjs ALLOWED_OBJECT_KEYS.
 // Keep in sync: the server drops any `show` tag not in this list.

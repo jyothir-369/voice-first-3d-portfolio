@@ -1,16 +1,15 @@
 // Phase 6 evaluation harness (plan 6.7 task 2): scores /api/ask answers
 // against the 80-question set (50 in-scope, 20 out-of-scope, 10 adversarial).
 // Uses a deterministic stand-in model so results are reproducible; the real
-// model is scored separately in E2E/manual runs with ANTHROPIC_API_KEY set.
+// model is scored separately in E2E/manual runs with GROQ_API_KEY set.
 import { describe, it, expect } from 'vitest'
 import {
   askQuestion,
   retrieveFacts,
   FALLBACK_SAY
-} from '../../../api/ask'
-import { isRefusalTopic, loadFactSources, ALLOWED_OBJECT_KEYS, type FactSource } from '../../../api/prompt'
+} from '../../../server/ask-service'
+import { isRefusalTopic, loadFactSources, ALLOWED_OBJECT_KEYS, type FactSource } from '../../../server/prompt'
 import evalSet from './fixtures/evalQuestions.json'
-import type { FactSource } from '../../api/prompt'
 
 interface StandInReply {
   say: string
@@ -71,10 +70,13 @@ function standInModel(question: string, facts: FactSource[]): StandInReply {
 function standInClient(question: string, facts: FactSource[]) {
   const reply = standInModel(question, facts)
   return {
-    messages: {
-      create: async () => ({ content: [{ type: 'text' as const, text: JSON.stringify(reply) }] })
+    responses: {
+      create: async () => ({
+        output: [{ type: 'message', content: [{ type: 'output_text', text: JSON.stringify(reply) }] }],
+        usage: { input_tokens: 12, output_tokens: 5 }
+      })
     }
-  } as unknown as import('@anthropic-ai/sdk').Anthropic
+  } as unknown as import('../../../server/ask-service').AskDeps['client']
 }
 
 

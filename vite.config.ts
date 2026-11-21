@@ -4,8 +4,8 @@ import { resolve } from 'path'
 export default defineConfig({
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src'),
-      '@content': resolve(__dirname, './content')
+      '@': resolve(import.meta.dirname, './src'),
+      '@content': resolve(import.meta.dirname, './content')
     }
   },
   server: {
@@ -19,9 +19,7 @@ export default defineConfig({
     minify: 'terser',
     rollupOptions: {
       output: {
-        manualChunks: {
-          three: ['three']
-        }
+        manualChunks: (id) => id.includes('/node_modules/three/') ? 'three' : undefined
       }
     }
   },
@@ -30,8 +28,8 @@ export default defineConfig({
     environment: 'jsdom',
     resolve: {
       alias: {
-        '@': resolve(__dirname, './src'),
-        '@content': resolve(__dirname, './content')
+        '@': resolve(import.meta.dirname, './src'),
+        '@content': resolve(import.meta.dirname, './content')
       }
     }
   }

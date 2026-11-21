@@ -8,8 +8,7 @@ export interface ModelPrice {
 }
 
 export const PRICES: Record<string, ModelPrice> = {
-  'claude-haiku-5-5': { inputPerMTok: 0.1, outputPerMTok: 0.5 },
-  'claude-sonnet-5-5': { inputPerMTok: 2.0, outputPerMTok: 10.0 }
+  'openai/gpt-oss-120b': { inputPerMTok: 0.15, outputPerMTok: 0.60 }
 }
 
 export interface CostLedger {
@@ -45,7 +44,7 @@ export class CostDashboard {
   /** Record one completed request. Returns true when the alert threshold is crossed. */
   record(model: string, inputTokens: number, outputTokens: number): boolean {
     this.roll()
-    const price = PRICES[model] ?? PRICES['claude-haiku-5-5']!
+    const price = PRICES[model] ?? PRICES['openai/gpt-oss-120b']!
     const cost = (inputTokens / 1_000_000) * price.inputPerMTok + (outputTokens / 1_000_000) * price.outputPerMTok
     this.ledger.requests += 1
     this.ledger.inputTokens += inputTokens
@@ -75,6 +74,6 @@ export class CostDashboard {
 }
 
 export function estimateCost(model: string, inputTokens: number, outputTokens: number): number {
-  const price = PRICES[model] ?? PRICES['claude-haiku-5-5']!
+  const price = PRICES[model] ?? PRICES['openai/gpt-oss-120b']!
   return (inputTokens / 1_000_000) * price.inputPerMTok + (outputTokens / 1_000_000) * price.outputPerMTok
 }

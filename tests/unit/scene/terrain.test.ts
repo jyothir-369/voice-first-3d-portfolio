@@ -24,14 +24,16 @@ vi.mock('three', async () => {
   const actual = await vi.importActual<typeof THREE>('three')
   return {
     ...actual,
-    WebGLRenderer: vi.fn().mockImplementation(() => ({
-      setPixelRatio,
-      setSize,
-      render: renderMock,
-      dispose: disposeRenderer,
-      forceContextLoss,
-      domElement: document.createElement('canvas')
-    }))
+    WebGLRenderer: vi.fn().mockImplementation(function () {
+      return {
+        setPixelRatio,
+        setSize,
+        render: renderMock,
+        dispose: disposeRenderer,
+        forceContextLoss,
+        domElement: document.createElement('canvas')
+      }
+    })
   }
 })
 

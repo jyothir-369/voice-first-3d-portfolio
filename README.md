@@ -32,7 +32,7 @@ npm install
 cp .env.example .env
 ```
 
-4. Add your Anthropic API key to `.env` (for Phase 6 AI backend)
+4. Add your Groq API key as `GROQ_API_KEY` in `.env.local` (server-side only; for the Phase 6 AI backend).
 
 ## Development
 

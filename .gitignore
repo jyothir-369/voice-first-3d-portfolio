@@ -48,3 +48,5 @@ Thumbs.db
 # Local AI agent configuration
 .agents/
 .claude/
+.vercel
+.env*

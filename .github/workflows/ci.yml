@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24.15.0'
           cache: 'npm'
 
       - name: Install dependencies
@@ -37,11 +37,14 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install chromium --with-deps
 
-      - name: E2E tests
-        run: npx playwright test --project=chromium
-
       - name: Production build
         run: npm run build
+
+      - name: Production bundle budget
+        run: node scripts/check-bundle-size.mjs
+
+      - name: E2E tests
+        run: npx playwright test --project=chromium --grep-invert "acceptable bundle size"
 
       - name: Upload test artifacts
         if: failure()
@@ -62,7 +65,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24.15.0'
           cache: 'npm'
 
       - name: Install dependencies
@@ -70,7 +73,6 @@ jobs:
 
       - name: Security audit
         run: npm audit --audit-level=high
-        continue-on-error: true
 
   secrets-check:
     name: Check for Secrets
@@ -82,16 +84,17 @@ jobs:
 
       - name: Check for secrets in files
         run: |
-          # Check for common secret patterns
-          if grep -r "ANTHROPIC_API_KEY.*=.*sk-" . --exclude-dir=node_modules --exclude-dir=.git; then
-            echo "Error: Found API key in files"
+          # Match an actual key assignment. The previous broad pattern also
+          # matched this scanner's own regex and caused every CI run to fail.
+          if git grep -nEI -- 'GROQ_API_KEY[[:space:]]*=[[:space:]]*["'"'"']?gsk_[A-Za-z0-9_-]+'; then
+            echo "Error: Found a Groq API key in tracked source"
             exit 1
           fi
-          
+
           # Check for .env file committed
           if [ -f ".env" ]; then
             echo "Error: .env file should not be committed"
             exit 1
           fi
-          
+
           echo "No secrets found ✓"
