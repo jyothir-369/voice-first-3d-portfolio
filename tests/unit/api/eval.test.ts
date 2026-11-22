@@ -72,6 +72,8 @@ function standInClient(question: string, facts: FactSource[]) {
   return {
     responses: {
       create: async () => ({
+        status: 'completed',
+        output_text: JSON.stringify(reply),
         output: [{ type: 'message', content: [{ type: 'output_text', text: JSON.stringify(reply) }] }],
         usage: { input_tokens: 12, output_tokens: 5 }
       })

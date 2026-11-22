@@ -1,13 +1,50 @@
+interface SpeechRecognitionAlternativeLike {
+  transcript: string
+}
+
+interface SpeechRecognitionResultLike {
+  readonly length: number
+  readonly [index: number]: SpeechRecognitionAlternativeLike
+}
+
+interface SpeechRecognitionResultsLike {
+  readonly length: number
+  readonly [index: number]: SpeechRecognitionResultLike
+}
+
+interface SpeechRecognitionResultEventLike extends Event {
+  results: SpeechRecognitionResultsLike
+}
+
+interface SpeechRecognitionErrorEventLike extends Event {
+  error: string
+}
+
+interface SpeechRecognitionLike {
+  lang: string
+  interimResults: boolean
+  maxAlternatives: number
+  continuous: boolean
+  onstart: ((event: Event) => void) | null
+  onresult: ((event: SpeechRecognitionResultEventLike) => void) | null
+  onerror: ((event: SpeechRecognitionErrorEventLike) => void) | null
+  onend: ((event: Event) => void) | null
+  start(): void
+  abort(): void
+}
+
+type SpeechRecognitionConstructorLike = new () => SpeechRecognitionLike
+
 declare global {
   interface Window {
-    SpeechRecognition?: any
-    webkitSpeechRecognition?: any
+    SpeechRecognition?: SpeechRecognitionConstructorLike
+    webkitSpeechRecognition?: SpeechRecognitionConstructorLike
   }
 }
 
 const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition
 
-let recognition: any = null
+let recognition: SpeechRecognitionLike | null = null
 let currentTranscript = ''
 let lastError = ''
 let isAborted = false
@@ -119,7 +156,7 @@ export function start(lang = 'en-IN'): void {
     if (onStart) onStart()
   }
 
-  recognition.onresult = (event: any) => {
+  recognition.onresult = (event: SpeechRecognitionResultEventLike) => {
     let transcript = ''
     for (let i = 0; i < event.results.length; i++) {
       transcript += event.results[i]?.[0]?.transcript || ''
@@ -132,7 +169,7 @@ export function start(lang = 'en-IN'): void {
     }
   }
 
-  recognition.onerror = (event: any) => {
+  recognition.onerror = (event: SpeechRecognitionErrorEventLike) => {
     lastError = event.error || ''
   }
 

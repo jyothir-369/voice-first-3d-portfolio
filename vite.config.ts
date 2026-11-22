@@ -17,6 +17,7 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     minify: 'terser',
+    terserOptions: { compress: { passes: 2 } },
     rollupOptions: {
       output: {
         manualChunks: (id) => id.includes('/node_modules/three/') ? 'three' : undefined

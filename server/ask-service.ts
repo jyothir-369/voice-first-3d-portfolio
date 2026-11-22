@@ -306,11 +306,10 @@ export async function askQuestion(
       ],
       max_output_tokens: MAX_TOKENS
     })
-    const textParts = response.output
-      .filter((item) => item.type === 'message')
-      .flatMap((item) => (item as { content?: unknown }).content ?? [])
-      .filter((c) => (c as { type?: string }).type === 'output_text') as { type: string; text: string }[]
-    rawText = textParts.map((p) => p.text).join('')
+    if (response.status !== 'completed') {
+      throw new Error(`Groq response was not completed (status: ${response.status})`)
+    }
+    rawText = typeof response.output_text === 'string' ? response.output_text.trim() : ''
     if (opts.cost) {
       const u = response.usage
       opts.cost.record(model, u?.input_tokens ?? 0, u?.output_tokens ?? 0)
@@ -321,6 +320,27 @@ export async function askQuestion(
       throw new AskError(502, `Groq API error: ${(err as Error).message}`)
     }
     throw new AskError(502, `Groq API unreachable: ${err instanceof Error ? err.message : 'unknown error'}`)
+  }
+
+  if (!rawText) {
+    throw new AskError(502, 'Groq returned an empty response')
+  }
+
+  let decoded: unknown
+  try {
+    decoded = JSON.parse(extractJson(rawText))
+  } catch {
+    throw new AskError(502, 'Groq returned invalid JSON')
+  }
+
+  if (
+    !decoded ||
+    typeof decoded !== 'object' ||
+    Array.isArray(decoded) ||
+    typeof (decoded as Record<string, unknown>).say !== 'string' ||
+    !(decoded as Record<string, unknown>).say?.toString().trim()
+  ) {
+    throw new AskError(502, 'Groq returned an invalid reply structure')
   }
 
   const parsed = parseReply(rawText, FALLBACK_SAY)

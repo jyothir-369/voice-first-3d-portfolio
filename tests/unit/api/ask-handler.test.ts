@@ -15,6 +15,8 @@ function fakeClient(payload: string): OpenAIClient {
   return {
     responses: {
       create: vi.fn().mockResolvedValue({
+        status: 'completed',
+        output_text: payload,
         output: [{ type: 'message', content: [{ type: 'output_text', text: payload }] }],
         usage: { input_tokens: 12, output_tokens: 5 }
       })
@@ -176,6 +178,17 @@ describe('Vercel Node Function: POST /api/ask', () => {
     expect(response.body).toEqual({ error: 'Too many requests. Please slow down.' })
   })
 
+  it('returns safe 502 when Groq returns malformed JSON', async () => {
+    process.env.GROQ_API_KEY = 'test-key'
+    const app = await start(createAskHandler({
+      clientFactory: () => fakeClient('plain text from Groq')
+    }))
+    servers.push(app.server)
+
+    const response = await app.request('POST', JSON.stringify({ question: 'What do you build?' }))
+    expect(response.status).toBe(502)
+    expect(response.body).toEqual({ error: 'AI service unavailable' })
+  })
   it('returns 502 for a Groq provider error without exposing details', async () => {
     process.env.GROQ_API_KEY = 'test-key'
     const client = {
